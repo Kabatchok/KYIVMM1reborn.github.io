@@ -3,27 +3,35 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-  <title>Kyiv M1 Reborn — Community Portal</title>
-  <meta name="description" content="Kyiv M1 Reborn — комʼюніті портал: галерея, посилання, правила, новини." />
+  <title>Kyiv M1 Reborn</title>
+  <meta name="description" content="Kyiv M1 Reborn — community hub." />
+  <meta name="theme-color" content="#0b0f12" />
 
   <style>
     :root{
-      --bg:#0b0f12;
-      --card:#10171c;
-      --text:#e9f0f3;
+      --bg0:#070a0c;
+      --bg1:#0b0f12;
+      --card: rgba(255,255,255,.045);
+      --card2: rgba(255,255,255,.03);
+      --stroke: rgba(255,255,255,.10);
+      --stroke2: rgba(255,255,255,.07);
+      --text:#eaf2f6;
       --muted:#a8b6be;
 
       --red:#ff4b4b;
       --red2:#d81f1f;
-      --crimson:#ff6b6b;
+      --pink:#ff6b6b;
+      --blue:#5dd2ff;
+      --orange:#ffb347;
+      --green:#6effa1;
 
-      --stroke:rgba(255,255,255,.10);
-      --stroke2:rgba(255,255,255,.06);
-      --shadow: 0 18px 50px rgba(0,0,0,.55);
+      --shadow: 0 18px 55px rgba(0,0,0,.55);
+      --shadow2: 0 30px 110px rgba(0,0,0,.70);
       --radius: 22px;
       --radius2: 16px;
       --ease: cubic-bezier(.2,.9,.2,1);
       --max: 1160px;
+
       --font: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Inter, Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji";
     }
 
@@ -34,21 +42,38 @@
       font-family:var(--font);
       color:var(--text);
       background:
-        radial-gradient(1200px 600px at 80% -10%, rgba(255,75,75,.22), transparent 60%),
-        radial-gradient(900px 500px at 10% 10%, rgba(216,31,31,.14), transparent 60%),
-        radial-gradient(800px 600px at 70% 110%, rgba(255,107,107,.10), transparent 60%),
-        linear-gradient(180deg, #070a0c, #0b0f12);
+        radial-gradient(1100px 620px at 85% -10%, rgba(255,75,75,.20), transparent 60%),
+        radial-gradient(900px 560px at 10% 10%, rgba(93,210,255,.10), transparent 60%),
+        radial-gradient(900px 600px at 70% 110%, rgba(255,107,107,.10), transparent 60%),
+        linear-gradient(180deg, var(--bg0), var(--bg1));
       overflow-x:hidden;
     }
     a{color:inherit; text-decoration:none}
     button{font-family:inherit}
     .container{max-width:var(--max); margin:0 auto; padding:0 18px}
 
-    /* subtle grain */
+    /* grain */
     .grain{
-      position:fixed; inset:0; pointer-events:none; z-index:-1; opacity:.08;
-      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='.45'/%3E%3C/svg%3E");
+      position:fixed; inset:0; pointer-events:none; z-index:-2; opacity:.08;
+      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='.45'/%3E%3C/svg%3E");
       mix-blend-mode:overlay;
+    }
+
+    /* floating orbs decor */
+    .bg-orbs{position:fixed; inset:0; z-index:-3; pointer-events:none; overflow:hidden}
+    .bg-orbs span{
+      position:absolute;
+      width: 420px; height: 420px; border-radius:999px;
+      filter: blur(22px);
+      opacity:.22;
+      animation: drift 10s var(--ease) infinite;
+    }
+    .bg-orbs .o1{left:-120px; top: 8%; background: radial-gradient(circle at 30% 30%, rgba(255,75,75,.55), transparent 62%); animation-delay:-2s}
+    .bg-orbs .o2{right:-160px; top: 26%; width:520px; height:520px; background: radial-gradient(circle at 40% 40%, rgba(93,210,255,.45), transparent 62%); animation-delay:-6s}
+    .bg-orbs .o3{left:25%; bottom:-220px; width:620px; height:620px; background: radial-gradient(circle at 40% 40%, rgba(255,179,71,.20), transparent 62%); animation-delay:-4s}
+    @keyframes drift{
+      0%,100%{transform: translate(0,0) scale(1)}
+      50%{transform: translate(18px,-14px) scale(1.03)}
     }
 
     /* topbar */
@@ -64,10 +89,11 @@
       gap:12px;
       padding: 10px 0;
     }
+
     .brand{
-      display:flex; align-items:center; gap:10px; cursor:pointer;
+      display:flex; align-items:center; gap:10px;
       user-select:none;
-      min-width: 0;
+      min-width:0;
     }
     .logo{
       width:38px; height:38px; border-radius:12px;
@@ -83,16 +109,20 @@
       content:"";
       position:absolute; inset:-60%;
       background: conic-gradient(from 120deg, transparent, rgba(255,255,255,.22), transparent);
-      animation: spin 5.5s linear infinite;
+      animation: spin 6s linear infinite;
       opacity:.7;
     }
     @keyframes spin{to{transform:rotate(360deg)}}
+    .brand .txt{min-width:0}
     .brand strong{
-      font-size:14px; letter-spacing:.5px;
-      display:block; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
-      max-width: 42vw;
+      display:block;
+      font-size:14px; letter-spacing:.6px;
+      white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+      max-width: 44vw;
     }
-    .brand span{display:block; font-size:12px; color:var(--muted); margin-top:1px}
+    .brand span{
+      display:block; font-size:12px; color:var(--muted); margin-top:1px
+    }
 
     .burger{
       display:none;
@@ -109,8 +139,7 @@
     }
     .burger:hover{transform: translateY(-1px); background: rgba(255,255,255,.06)}
     .burger span{
-      width:18px; height:2px;
-      border-radius:999px;
+      width:18px; height:2px; border-radius:999px;
       background: rgba(255,255,255,.78);
       transition: transform .18s var(--ease), opacity .18s var(--ease);
     }
@@ -133,22 +162,32 @@
       transition: transform .2s var(--ease), background .2s var(--ease), color .2s var(--ease);
       outline:none;
       white-space:nowrap;
+      display:inline-flex; gap:8px; align-items:center;
     }
     .nav a:hover{background: rgba(255,75,75,.10); color:var(--text); transform: translateY(-1px)}
     .nav a.active{background: rgba(255,75,75,.16); color:var(--text)}
+    .nav i{
+      width:8px; height:8px; border-radius:99px;
+      background: rgba(255,255,255,.18);
+      box-shadow: 0 0 0 1px rgba(255,255,255,.06);
+    }
+    .nav a.active i{background: var(--red)}
+    .nav a[data-route="#profile"] i{background: rgba(110,255,161,.22)}
+    .nav a[data-route="#profile"].active i{background: var(--green)}
 
     .actions{display:flex; align-items:center; gap:10px; flex-wrap:wrap; justify-content:flex-end}
     .btn{
       border:0; cursor:pointer;
       padding:10px 14px;
       border-radius: 999px;
-      font-weight:800;
+      font-weight:900;
       letter-spacing:.2px;
       background: linear-gradient(135deg, var(--red), var(--red2));
       color:#2a0404;
       box-shadow: 0 16px 30px rgba(216,31,31,.18);
       transition: transform .18s var(--ease), filter .18s var(--ease);
       will-change: transform;
+      display:inline-flex; align-items:center; gap:8px;
     }
     .btn:hover{transform: translateY(-1px); filter:saturate(1.06)}
     .btn:active{transform: translateY(0px) scale(.99)}
@@ -157,29 +196,213 @@
       color: var(--text);
       border:1px solid var(--stroke2);
       box-shadow:none;
-      font-weight:700;
+      font-weight:800;
+    }
+    .btn.ghost{
+      background: transparent;
+      border:1px solid var(--stroke2);
+      box-shadow:none;
+      color: var(--text);
+      font-weight:800;
+    }
+    .btn.small{padding:9px 12px; font-size:13px}
+    .btn.block{width:100%; justify-content:center}
+
+    /* layout */
+    main{padding: 18px 0 36px}
+    .shell{
+      display:grid;
+      grid-template-columns: 330px 1fr;
+      gap: 14px;
+      align-items:start;
     }
 
-    /* hero */
-    .hero{ padding: 28px 0 10px; }
-    .hero-card{
+    /* left panel */
+    .panel{
+      border-radius: calc(var(--radius) + 8px);
+      border:1px solid var(--stroke2);
+      background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02));
+      box-shadow: var(--shadow);
+      overflow:hidden;
+      position:sticky;
+      top: 92px;
+    }
+    .panel-head{
+      padding: 14px 14px 12px;
+      border-bottom:1px solid var(--stroke2);
+      background: rgba(0,0,0,.10);
+      display:flex; gap:12px; align-items:center; justify-content:space-between;
+    }
+    .panel-head .title{
+      min-width:0;
+    }
+    .panel-head b{display:block; font-size:13px; letter-spacing:.4px}
+    .panel-head small{display:block; color:var(--muted); margin-top:2px}
+    .panel-body{padding: 12px 12px 14px}
+
+    .stats{
+      display:grid; grid-template-columns: 1fr 1fr; gap:10px;
+    }
+    .stat{
+      border-radius: 16px;
+      border:1px solid var(--stroke2);
+      background: rgba(0,0,0,.18);
+      padding: 10px 10px;
+      display:flex; align-items:center; justify-content:space-between; gap:10px;
+      transition: transform .18s var(--ease), background .18s var(--ease);
+      cursor:pointer;
+    }
+    .stat:hover{transform: translateY(-1px); background: rgba(255,255,255,.05)}
+    .stat span{color:var(--muted); font-size:12px}
+    .stat b{font-size:12px; letter-spacing:.3px}
+    .pulse{
+      width:10px; height:10px; border-radius:99px;
+      background: var(--red);
+      box-shadow: 0 0 0 0 rgba(255,75,75,.35);
+      animation: pulse 1.8s ease infinite;
+      flex:0 0 auto;
+    }
+    .pulse.green{background: var(--green); box-shadow: 0 0 0 0 rgba(110,255,161,.28)}
+    .pulse.blue{background: var(--blue); box-shadow: 0 0 0 0 rgba(93,210,255,.24)}
+    @keyframes pulse{
+      0%{box-shadow: 0 0 0 0 rgba(255,75,75,.35)}
+      70%{box-shadow: 0 0 0 10px rgba(255,75,75,0)}
+      100%{box-shadow: 0 0 0 0 rgba(255,75,75,0)}
+    }
+
+    .quick-actions{
+      display:grid; grid-template-columns: 1fr 1fr; gap:10px;
+      margin-top: 10px;
+    }
+    .qa{
+      border-radius: 16px;
+      border:1px solid var(--stroke2);
+      background: rgba(0,0,0,.18);
+      padding: 10px 10px;
+      cursor:pointer;
+      transition: transform .18s var(--ease), background .18s var(--ease), border-color .18s var(--ease);
       position:relative;
-      border-radius: calc(var(--radius) + 14px);
+      overflow:hidden;
+      min-height: 56px;
+      display:flex; align-items:center; gap:10px;
+    }
+    .qa:hover{transform: translateY(-2px); background: rgba(255,75,75,.08); border-color: rgba(255,75,75,.22)}
+    .qa .ico{
+      width:34px; height:34px; border-radius: 14px;
+      border:1px solid var(--stroke2);
+      background: rgba(255,255,255,.05);
+      display:grid; place-items:center;
+      flex: 0 0 auto;
+    }
+    .qa b{display:block; font-size:12px}
+    .qa span{display:block; color:var(--muted); font-size:11px; margin-top:2px}
+    .qa .shine{
+      position:absolute; inset:-70%;
+      background: conic-gradient(from 120deg, transparent, rgba(255,255,255,.16), transparent);
+      opacity:0;
+      transition: opacity .2s var(--ease);
+      animation: spin 7.5s linear infinite;
+    }
+    .qa:hover .shine{opacity:.55}
+
+    .divider{
+      height:1px; background: var(--stroke2);
+      margin: 12px 2px;
+    }
+
+    .mini{
+      display:flex; gap:10px; flex-wrap:wrap;
+    }
+    .chip{
+      padding: 9px 10px;
+      border-radius: 999px;
+      border:1px solid var(--stroke2);
+      background: rgba(255,255,255,.03);
+      color: var(--muted);
+      font-size: 12px;
+      cursor:pointer;
+      transition: transform .18s var(--ease), background .18s var(--ease), color .18s var(--ease);
+      display:inline-flex; align-items:center; gap:8px;
+    }
+    .chip:hover{transform: translateY(-1px); background: rgba(255,255,255,.06); color: var(--text)}
+    .chip i{width:8px; height:8px; border-radius:99px; background: rgba(255,255,255,.20)}
+    .chip.red i{background: rgba(255,75,75,.75)}
+    .chip.blue i{background: rgba(93,210,255,.75)}
+    .chip.green i{background: rgba(110,255,161,.75)}
+    .chip.orange i{background: rgba(255,179,71,.75)}
+
+    /* stage */
+    .stage{
+      border-radius: calc(var(--radius) + 8px);
+      border:1px solid var(--stroke2);
+      background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.015));
+      box-shadow: var(--shadow2);
+      overflow:hidden;
+      position:relative;
+      min-height: 620px;
+    }
+    .stage-head{
+      padding: 14px 14px 12px;
+      border-bottom:1px solid var(--stroke2);
+      background: rgba(0,0,0,.10);
+      display:flex; align-items:center; justify-content:space-between; gap:10px;
+    }
+    .crumb{
+      display:flex; align-items:center; gap:10px; min-width:0;
+    }
+    .crumb .dot{
+      width:10px; height:10px; border-radius:99px;
+      background: rgba(255,255,255,.18);
+      box-shadow: 0 0 0 1px rgba(255,255,255,.07);
+    }
+    .crumb b{
+      font-size:13px; letter-spacing:.35px;
+      white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+      max-width: 52vw;
+    }
+    .crumb small{color:var(--muted)}
+    .stage-tools{display:flex; gap:8px; flex-wrap:wrap; justify-content:flex-end}
+
+    .view{
+      display:none;
+      padding: 16px;
+      animation: viewIn .28s var(--ease) both;
+    }
+    .view.active{display:block}
+    @keyframes viewIn{
+      from{opacity:0; transform: translateY(10px) scale(.99)}
+      to{opacity:1; transform: translateY(0) scale(1)}
+    }
+
+    /* hero inside stage */
+    .hero{
+      border-radius: calc(var(--radius) + 8px);
       border:1px solid var(--stroke2);
       background:
-        radial-gradient(800px 380px at 78% 35%, rgba(255,75,75,.18), transparent 60%),
-        radial-gradient(600px 380px at 20% 20%, rgba(255,255,255,.06), transparent 50%),
+        radial-gradient(700px 380px at 78% 35%, rgba(255,75,75,.16), transparent 60%),
+        radial-gradient(600px 360px at 20% 20%, rgba(255,255,255,.06), transparent 50%),
         linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
       box-shadow: var(--shadow);
       overflow:hidden;
-      padding: 22px;
-      min-height: 420px;
+      padding: 18px;
       display:grid;
-      grid-template-columns: 1.1fr .9fr;
-      gap: 18px;
-      transform: translateZ(0);
+      grid-template-columns: 1.15fr .85fr;
+      gap: 14px;
+      position:relative;
     }
-
+    .hero h1{
+      margin: 6px 0 0;
+      font-size: clamp(28px, 3.8vw, 52px);
+      line-height:1.05;
+      letter-spacing:-.7px;
+    }
+    .hero .sub{
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 14px;
+      line-height:1.7;
+      max-width: 62ch;
+    }
     .kicker{
       display:inline-flex; align-items:center; gap:8px;
       padding:8px 10px;
@@ -192,26 +415,12 @@
       animation: floaty 3.2s var(--ease) infinite;
     }
     @keyframes floaty{ 0%,100%{transform: translateY(0)} 50%{transform: translateY(-3px)} }
-    h1{
-      margin: 10px 0 0;
-      font-size: clamp(30px, 4.2vw, 52px);
-      line-height:1.05;
-      letter-spacing:-.6px;
-    }
-    .sub{
-      color: var(--muted);
-      font-size: 15px;
-      line-height:1.65;
-      max-width: 60ch;
-      margin-top: 10px;
-    }
-    .hero-cta{
-      display:flex; flex-wrap:wrap; gap:10px; margin-top: 14px;
-    }
-    .hero-cta .btn{padding:12px 16px}
 
-    .meta-row{
-      display:flex; flex-wrap:wrap; gap:10px; margin-top: 14px;
+    .hero-cta{display:flex; flex-wrap:wrap; gap:10px; margin-top: 14px}
+    .hero-cta .btn{padding:12px 14px}
+
+    .hero-badges{
+      display:flex; flex-wrap:wrap; gap:10px; margin-top: 12px;
     }
     .pill{
       display:flex; align-items:center; gap:8px;
@@ -223,15 +432,16 @@
       font-size: 13px;
       cursor:pointer;
       transition: transform .18s var(--ease), background .18s var(--ease);
+      user-select:none;
     }
     .pill:hover{transform: translateY(-1px); background: rgba(255,255,255,.05)}
-    .dot{width:8px; height:8px; border-radius:99px; background: var(--red)}
-    .dot.blue{background:#5dd2ff}
-    .dot.orange{background:#ffb347}
+    .pill i{width:8px; height:8px; border-radius:99px; background: var(--red)}
+    .pill i.blue{background: var(--blue)}
+    .pill i.orange{background: var(--orange)}
+    .pill i.green{background: var(--green)}
 
-    .hero-right{ display:flex; align-items:center; justify-content:center; position:relative; }
     .orb{
-      width: 320px; height: 320px;
+      width: 280px; height: 280px;
       border-radius: 999px;
       border:1px solid rgba(255,255,255,.10);
       background:
@@ -240,11 +450,14 @@
         radial-gradient(260px 260px at 50% 55%, rgba(255,75,75,.18), rgba(216,31,31,.10), rgba(0,0,0,.0));
       box-shadow: 0 40px 90px rgba(216,31,31,.18);
       position:relative;
-      animation: orb 7s var(--ease) infinite;
+      animation: orbFloat 7s var(--ease) infinite;
       cursor:pointer;
       will-change: transform;
+      margin-left:auto;
+      display:grid; place-items:center;
+      overflow:hidden;
     }
-    @keyframes orb{
+    @keyframes orbFloat{
       0%,100%{transform: translateY(0) rotate(-2deg)}
       50%{transform: translateY(-10px) rotate(2deg)}
     }
@@ -252,23 +465,13 @@
       content:"";
       position:absolute; inset:-2px;
       border-radius:999px;
-      background: conic-gradient(from 0deg, rgba(255,75,75,.32), rgba(255,255,255,.08), rgba(216,31,31,.22), rgba(255,255,255,.06), rgba(255,75,75,.32));
+      background: conic-gradient(from 0deg, rgba(255,75,75,.30), rgba(255,255,255,.08), rgba(216,31,31,.22), rgba(255,255,255,.06), rgba(255,75,75,.30));
       filter: blur(10px);
       opacity:.55;
       z-index:-1;
       animation: spin 8s linear infinite;
     }
-    .orb-inner{
-      position:absolute; inset: 18px;
-      border-radius: 999px;
-      border:1px solid rgba(255,255,255,.10);
-      background:
-        radial-gradient(220px 220px at 40% 35%, rgba(255,255,255,.11), transparent 60%),
-        linear-gradient(180deg, rgba(0,0,0,.15), rgba(0,0,0,.35));
-      display:flex; align-items:center; justify-content:center;
-      overflow:hidden;
-    }
-    .badge{
+    .orb .badge{
       text-align:center;
       padding: 14px 16px;
       border-radius: 18px;
@@ -277,32 +480,10 @@
       backdrop-filter: blur(8px);
       box-shadow: 0 20px 60px rgba(0,0,0,.35);
     }
-    .badge strong{display:block; font-size:14px; letter-spacing:.4px}
-    .badge span{display:block; color:var(--muted); font-size:12px; margin-top:3px}
+    .orb .badge strong{display:block; font-size:13px; letter-spacing:.4px}
+    .orb .badge span{display:block; color:var(--muted); font-size:12px; margin-top:3px}
 
-    .leaf{
-      position:absolute;
-      width: 14px; height: 14px;
-      border-radius: 6px 14px 6px 14px;
-      background: rgba(255,75,75,.82);
-      opacity:.55;
-      animation: drift 9s var(--ease) infinite;
-    }
-    .leaf:nth-child(1){left: 8%; top: 18%; animation-delay: -1s}
-    .leaf:nth-child(2){left: 24%; top: 76%; width:10px; height:10px; animation-delay: -4s; opacity:.4}
-    .leaf:nth-child(3){left: 88%; top: 26%; width:12px; height:12px; animation-delay: -6s}
-    @keyframes drift{
-      0%,100%{transform: translate(0,0) rotate(0deg)}
-      50%{transform: translate(14px,-10px) rotate(14deg)}
-    }
-
-    /* sections */
-    .section{padding: 18px 0 34px}
-    .section h2{margin: 10px 0 6px; font-size:18px}
-    .section .lead{
-      color:var(--muted); font-size:13px; line-height:1.7; max-width: 84ch;
-    }
-
+    /* cards */
     .grid{
       display:grid;
       grid-template-columns: repeat(12, 1fr);
@@ -339,6 +520,11 @@
       color: var(--muted);
       font-size: 12px;
     }
+    .tag i{width:8px; height:8px; border-radius:99px; background: rgba(255,255,255,.22)}
+    .tag i.red{background: var(--red)}
+    .tag i.blue{background: var(--blue)}
+    .tag i.orange{background: var(--orange)}
+    .tag i.green{background: var(--green)}
     .shine{
       position:absolute; inset:-60%;
       background: conic-gradient(from 120deg, transparent, rgba(255,255,255,.16), transparent);
@@ -355,6 +541,7 @@
       background: rgba(0,0,0,.18);
       overflow:hidden;
       box-shadow: var(--shadow);
+      margin-top: 14px;
     }
     .gallery-head{
       display:flex; align-items:center; justify-content:space-between; gap:10px;
@@ -378,6 +565,7 @@
       overflow:hidden;
       position:relative;
       transform: translateZ(0);
+      cursor:pointer;
     }
     .shot img{
       width:100%; height: 240px;
@@ -387,26 +575,57 @@
       transition: transform .35s var(--ease), filter .35s var(--ease);
       filter: saturate(1.02) contrast(1.02);
     }
-    .shot:hover img{transform: scale(1.07)}
+    .shot:hover img{transform: scale(1.08)}
     .shot:after{
       content:"";
       position:absolute; inset:0;
-      background: linear-gradient(180deg, transparent 55%, rgba(0,0,0,.55));
+      background: linear-gradient(180deg, transparent 55%, rgba(0,0,0,.62));
       pointer-events:none;
     }
     .shot .cap{
       position:absolute; left:12px; bottom:10px; right:12px;
       display:flex; align-items:flex-end; justify-content:space-between; gap:10px;
     }
-    .cap .t{
-      font-weight:900; font-size:13px;
-      text-shadow: 0 14px 40px rgba(0,0,0,.6);
+    .cap .t{font-weight:950; font-size:13px; text-shadow: 0 14px 40px rgba(0,0,0,.6)}
+    .cap .s{color: rgba(233,240,243,.82); font-size:12px; text-shadow: 0 14px 40px rgba(0,0,0,.6)}
+
+    /* news list */
+    .news{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+      margin-top: 14px;
     }
-    .cap .s{
-      color: rgba(233,240,243,.82);
-      font-size:12px;
-      text-shadow: 0 14px 40px rgba(0,0,0,.6);
+    .post{
+      border-radius: 18px;
+      border:1px solid var(--stroke2);
+      background: rgba(0,0,0,.18);
+      padding: 12px;
+      cursor:pointer;
+      transition: transform .18s var(--ease), background .18s var(--ease), border-color .18s var(--ease);
+      position:relative;
+      overflow:hidden;
     }
+    .post:hover{transform: translateY(-2px); background: rgba(255,255,255,.05); border-color: rgba(93,210,255,.20)}
+    .post h4{margin:0; font-size:14px}
+    .post p{margin:6px 0 0; color:var(--muted); font-size:13px; line-height:1.55}
+    .meta{
+      display:flex; gap:10px; flex-wrap:wrap; margin-top: 10px;
+      color: rgba(168,182,190,.92);
+      font-size: 12px;
+    }
+    .badge2{
+      display:inline-flex; gap:8px; align-items:center;
+      padding: 7px 10px;
+      border-radius: 999px;
+      border:1px solid var(--stroke2);
+      background: rgba(0,0,0,.22);
+    }
+    .badge2 i{width:8px; height:8px; border-radius:99px; background: rgba(255,255,255,.20)}
+    .badge2 i.blue{background: var(--blue)}
+    .badge2 i.red{background: var(--red)}
+    .badge2 i.orange{background: var(--orange)}
+    .badge2 i.green{background: var(--green)}
 
     /* rules */
     .rules{
@@ -415,16 +634,17 @@
       background: rgba(0,0,0,.18);
       padding: 14px;
       box-shadow: var(--shadow);
+      margin-top: 14px;
     }
     .rules ul{
       margin: 10px 0 0;
       padding-left: 18px;
-      color: var(--muted);
+      color:var(--muted);
       line-height: 1.8;
       font-size: 13px;
     }
     .rules li b{color: var(--text)}
-    .rules .note{
+    .note{
       margin-top: 10px;
       border:1px solid rgba(255,75,75,.18);
       background: rgba(255,75,75,.08);
@@ -434,6 +654,43 @@
       font-size: 12px;
       line-height: 1.55;
     }
+
+    /* profile */
+    .profile{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-top: 14px;
+    }
+    .box{
+      border-radius: 18px;
+      border:1px solid var(--stroke2);
+      background: rgba(0,0,0,.18);
+      padding: 12px;
+      box-shadow: 0 18px 55px rgba(0,0,0,.30);
+    }
+    .box h4{margin:0; font-size:14px}
+    .box p{margin:8px 0 0; color:var(--muted); font-size:13px; line-height:1.55}
+    .row{
+      display:flex; gap:10px; flex-wrap:wrap; align-items:center;
+      margin-top: 10px;
+    }
+    .field{
+      width:100%;
+      margin-top: 10px;
+    }
+    label{display:block; font-size:12px; color: var(--muted); margin: 0 0 6px}
+    input{
+      width:100%;
+      padding: 12px 12px;
+      border-radius: 14px;
+      border:1px solid var(--stroke2);
+      background: rgba(255,255,255,.03);
+      color: var(--text);
+      outline:none;
+      transition: border-color .18s var(--ease), background .18s var(--ease);
+    }
+    input:focus{border-color: rgba(93,210,255,.28); background: rgba(255,255,255,.05)}
 
     /* toast */
     .toast{
@@ -458,42 +715,105 @@
     .toast.show{opacity:1; transform: translateX(-50%) translateY(0)}
     .toast .t-dot{width:9px; height:9px; border-radius:99px; background: var(--red)}
 
-    /* reveal animations */
-    .reveal{opacity:0; transform: translateY(14px); transition: opacity .55s var(--ease), transform .55s var(--ease)}
-    .reveal.on{opacity:1; transform: translateY(0)}
+    /* modal */
+    .modal{
+      position: fixed; inset:0;
+      display:none;
+      align-items:center; justify-content:center;
+      background: rgba(0,0,0,.55);
+      z-index: 1000;
+      padding: 16px;
+    }
+    .modal.show{display:flex; animation: fadeIn .18s var(--ease) both}
+    @keyframes fadeIn{from{opacity:0}to{opacity:1}}
+    .modal-card{
+      width:min(860px, 100%);
+      border-radius: calc(var(--radius) + 10px);
+      border:1px solid var(--stroke2);
+      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+      box-shadow: var(--shadow2);
+      overflow:hidden;
+      transform: translateY(6px);
+      animation: pop .22s var(--ease) both;
+    }
+    @keyframes pop{from{opacity:0; transform: translateY(10px) scale(.99)}to{opacity:1; transform: translateY(0) scale(1)}}
+    .modal-head{
+      padding: 14px 14px;
+      border-bottom:1px solid var(--stroke2);
+      display:flex; align-items:center; justify-content:space-between; gap:10px;
+      background: rgba(0,0,0,.10);
+    }
+    .modal-head b{font-size:13px}
+    .modal-body{padding: 14px}
+    .modal-close{
+      width:42px; height:42px;
+      border-radius: 14px;
+      border:1px solid var(--stroke2);
+      background: rgba(255,255,255,.04);
+      color: var(--text);
+      cursor:pointer;
+      transition: transform .18s var(--ease), background .18s var(--ease);
+    }
+    .modal-close:hover{transform: translateY(-1px); background: rgba(255,255,255,.07)}
+    .modal-grid{
+      display:grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap: 14px;
+    }
+    .preview{
+      border-radius: 18px;
+      border:1px solid var(--stroke2);
+      background: rgba(0,0,0,.18);
+      overflow:hidden;
+      position:relative;
+      min-height: 320px;
+    }
+    .preview img{
+      width:100%; height: 100%;
+      object-fit: cover;
+      display:block;
+      transform: scale(1.02);
+    }
+    .preview:after{
+      content:"";
+      position:absolute; inset:0;
+      background: linear-gradient(180deg, transparent 55%, rgba(0,0,0,.70));
+      pointer-events:none;
+    }
+    .preview .p-cap{
+      position:absolute; left:12px; bottom:10px; right:12px;
+      display:flex; align-items:flex-end; justify-content:space-between; gap:10px;
+    }
+    .preview .p-cap b{font-size:13px}
+    .preview .p-cap span{color: rgba(233,240,243,.82); font-size:12px}
 
     /* footer */
     footer{
-      padding: 28px 0 40px;
+      padding: 22px 0 40px;
       color: var(--muted);
       font-size: 12px;
       border-top: 1px solid var(--stroke2);
       background: rgba(0,0,0,.10);
-      margin-top: 16px;
+    }
+    .footer-inner{
+      display:flex; gap:12px; align-items:center; justify-content:space-between; flex-wrap:wrap
     }
 
     /* responsive */
-    @media (max-width: 920px){
-      .hero-card{grid-template-columns: 1fr; min-height: unset}
-      .hero-right{padding: 18px 0 6px}
-      .orb{width: 280px; height: 280px}
-      .grid{grid-template-columns: repeat(6, 1fr)}
-      .card{grid-column: span 6}
+    @media (max-width: 980px){
+      .shell{grid-template-columns: 1fr}
+      .panel{position:relative; top:0}
+      .hero{grid-template-columns: 1fr}
+      .orb{margin: 10px auto 0; width: 260px; height: 260px}
+      .modal-grid{grid-template-columns: 1fr}
+      .profile{grid-template-columns: 1fr}
       .shot{grid-column: span 12}
       .shot img{height: 240px}
     }
-
     @media (max-width: 720px){
       .container{padding:0 14px}
-
       .burger{display:flex}
-
-      .topbar-inner{
-        align-items:flex-start;
-        gap:10px;
-        flex-wrap:wrap;
-      }
-
+      .topbar-inner{align-items:flex-start; gap:10px; flex-wrap:wrap}
       .nav{
         width:100%;
         order: 3;
@@ -506,34 +826,12 @@
       }
       .nav.open{display:flex}
       .nav a{width:100%; padding:12px 12px}
-
-      .actions{
-        order:2;
-        margin-left:auto;
-        gap:8px;
-      }
-
+      .actions{order:2; margin-left:auto; gap:8px}
       .btn{padding:10px 12px; font-size:13px}
       .btn.secondary{padding:10px 12px}
-
-      .hero{padding: 18px 0 8px}
-      .hero-card{
-        padding: 16px;
-        gap: 12px;
-        border-radius: calc(var(--radius) + 8px);
-      }
-      .sub{font-size:14px}
-      .pill{padding:9px 10px; font-size:12px}
-      .shot img{height: 220px}
+      .grid{grid-template-columns: repeat(6, 1fr)}
+      .card{grid-column: span 6}
     }
-
-    @media (max-width: 380px){
-      .logo{display:none}
-      .actions{width:100%; justify-content:space-between}
-      .btn{flex:1}
-      .btn.secondary{flex:1}
-    }
-
     @media (prefers-reduced-motion: reduce){
       *{animation:none !important; transition:none !important}
     }
@@ -542,346 +840,656 @@
 
 <body>
   <div class="grain" aria-hidden="true"></div>
+  <div class="bg-orbs" aria-hidden="true">
+    <span class="o1"></span><span class="o2"></span><span class="o3"></span>
+  </div>
 
-  <!-- TOPBAR -->
   <header class="topbar">
     <div class="container">
       <div class="topbar-inner">
-        <div class="brand" id="goHome" tabindex="0" title="На головну">
-          <div class="logo" aria-hidden="true"></div>
-          <div style="min-width:0">
+        <a class="brand" href="#home" aria-label="На головну">
+          <span class="logo" aria-hidden="true"></span>
+          <span class="txt">
             <strong>Kyiv M1 Reborn</strong>
-            <span>Community Portal</span>
-          </div>
-        </div>
+            <span>Community Hub</span>
+          </span>
+        </a>
 
         <button class="burger" id="burger" aria-label="Меню" aria-expanded="false">
           <span></span><span></span><span></span>
         </button>
 
         <nav class="nav" id="nav" aria-label="Навігація">
-          <a href="#home" class="active" data-link>Головна</a>
-          <a href="#gallery" data-link>Галерея</a>
-          <a href="#community" data-link>Комʼюніті</a>
-          <a href="#rules" data-link>Правила</a>
-          <a href="#about" data-link>Про нас</a>
+          <a href="#home" data-route="#home"><i></i>Головна</a>
+          <a href="#gallery" data-route="#gallery"><i></i>Галерея</a>
+          <a href="#news" data-route="#news"><i></i>Новини</a>
+          <a href="#community" data-route="#community"><i></i>Комʼюніті</a>
+          <a href="#rules" data-route="#rules"><i></i>Правила</a>
+          <a href="#about" data-route="#about"><i></i>Про нас</a>
+          <a href="#profile" data-route="#profile" id="navProfile"><i></i>Профіль</a>
         </nav>
 
         <div class="actions">
-          <a class="btn secondary" href="https://discord.gg/yfpzKqD2" target="_blank" rel="noopener">Discord</a>
-          <a class="btn" href="https://www.roblox.com/communities/426028883/Kyiv-M1-Reborn#!/about" target="_blank" rel="noopener">Перейти до комʼюніті</a>
+          <button class="btn secondary" id="soundBtn" type="button">🔊 Звук</button>
+          <button class="btn secondary" id="loginBtn" type="button">👤 Логін</button>
+          <a class="btn" href="https://www.roblox.com/communities/426028883/Kyiv-M1-Reborn#!/about" target="_blank" rel="noopener">Roblox</a>
         </div>
       </div>
     </div>
   </header>
 
-  <!-- TOAST -->
   <div class="toast" id="toast" role="status" aria-live="polite">
     <span class="t-dot"></span>
     <span id="toastText">OK</span>
   </div>
 
   <main class="container">
+    <div class="shell">
 
-    <!-- HOME -->
-    <section id="home" class="hero reveal">
-      <div class="hero-card" id="heroCard">
-        <div class="leaf"></div><div class="leaf"></div><div class="leaf"></div>
+      <!-- LEFT PANEL -->
+      <aside class="panel" aria-label="Панель керування">
+        <div class="panel-head">
+          <div class="title">
+            <b>Control Deck</b>
+            <small id="userLine">Гість</small>
+          </div>
+          <button class="btn ghost small" id="randomBtn" type="button">🎲 Random</button>
+        </div>
 
-        <div class="hero-left">
-          <div class="kicker">
-            <span class="dot blue"></span>
-            <span>Roblox community • Updates • Media</span>
+        <div class="panel-body">
+          <div class="stats">
+            <div class="stat" data-action="ping">
+              <span>Статус</span>
+              <b><span class="pulse green"></span> Online</b>
+            </div>
+            <div class="stat" data-action="boost">
+              <span>Boost</span>
+              <b><span class="pulse blue"></span> FX</b>
+            </div>
+            <div class="stat" data-action="notify">
+              <span>Сповіщення</span>
+              <b><span class="pulse"></span> On</b>
+            </div>
+            <div class="stat" data-action="safe">
+              <span>Safe</span>
+              <b>Mode</b>
+            </div>
           </div>
 
-          <h1>
-            Ласкаво просимо в <span style="color:var(--crimson)">Kyiv M1 Reborn</span>
-          </h1>
+          <div class="divider"></div>
 
-          <div class="sub">
-            Це не “портал гри” і не магазин. Це акуратна сторінка комʼюніті:
-            посилання, галерея, правила, короткі апдейти і швидкий вхід у Roblox та Discord.
+          <div class="quick-actions">
+            <button class="qa" data-go="#gallery" type="button">
+              <span class="shine"></span>
+              <span class="ico">📷</span>
+              <span><b>Галерея</b><span>відкрити</span></span>
+            </button>
+            <button class="qa" data-go="#news" type="button">
+              <span class="shine"></span>
+              <span class="ico">📰</span>
+              <span><b>Новини</b><span>оновлення</span></span>
+            </button>
+            <button class="qa" data-open="modal-links" type="button">
+              <span class="shine"></span>
+              <span class="ico">🔗</span>
+              <span><b>Лінки</b><span>скопіювати</span></span>
+            </button>
+            <button class="qa" data-open="modal-support" type="button">
+              <span class="shine"></span>
+              <span class="ico">🛠️</span>
+              <span><b>Підтримка</b><span>контакт</span></span>
+            </button>
           </div>
 
-          <div class="hero-cta">
-            <a class="btn" href="https://www.roblox.com/communities/426028883/Kyiv-M1-Reborn#!/about" target="_blank" rel="noopener">
-              Відкрити Roblox-комʼюніті
-            </a>
-            <a class="btn secondary" href="https://discord.gg/yfpzKqD2" target="_blank" rel="noopener">
-              Увійти в Discord
-            </a>
-            <button class="btn secondary" id="copyLinksBtn">Скопіювати посилання</button>
+          <div class="divider"></div>
+
+          <div class="mini">
+            <button class="chip red" data-go="#rules" type="button"><i></i>Правила</button>
+            <button class="chip blue" data-open="modal-post" type="button"><i></i>Пост</button>
+            <button class="chip orange" data-open="modal-shot" type="button"><i></i>Фото</button>
+            <button class="chip green" data-go="#profile" type="button"><i></i>Профіль</button>
           </div>
 
-          <div class="meta-row">
-            <div class="pill" data-toast="Фото/відео з проєкту"> <span class="dot"></span> Галерея</div>
-            <div class="pill" data-toast="Швидкий контакт з модерами"> <span class="dot orange"></span> Підтримка</div>
-            <div class="pill" data-toast="Правила комʼюніті — коротко й ясно"> <span class="dot blue"></span> Правила</div>
+          <div class="divider"></div>
+
+          <button class="btn secondary block" id="discordBtn" type="button">Discord (відкрити / скопіювати)</button>
+          <div style="height:10px"></div>
+          <a class="btn block" href="https://discord.gg/yfpzKqD2" target="_blank" rel="noopener">Перейти в Discord</a>
+        </div>
+      </aside>
+
+      <!-- STAGE -->
+      <section class="stage" aria-label="Екран">
+        <div class="stage-head">
+          <div class="crumb">
+            <span class="dot" id="crumbDot"></span>
+            <div style="min-width:0">
+              <b id="crumbTitle">Головна</b>
+              <small id="crumbSub">hub</small>
+            </div>
+          </div>
+
+          <div class="stage-tools">
+            <button class="btn ghost small" id="fxBtn" type="button">✨ FX</button>
+            <button class="btn ghost small" id="copyAllBtn" type="button">📎 Copy</button>
+            <button class="btn secondary small" id="openModalBtn" type="button">⚡ Actions</button>
           </div>
         </div>
 
-        <div class="hero-right">
-          <div class="orb" id="orb" title="Клік — ефект" aria-label="Orb">
-            <div class="orb-inner">
-              <div class="badge">
-                <strong>Kyiv M1 Reborn</strong>
-                <span>Join • Share • Build</span>
+        <!-- HOME -->
+        <div class="view" id="view-home" data-title="Головна" data-sub="hub" data-dot="red">
+          <div class="hero">
+            <div>
+              <div class="kicker">🚇 Roblox • Community • Media</div>
+              <h1>Kyiv M1 <span style="color:var(--pink)">Reborn</span></h1>
+              <div class="sub">
+                Тут все зібрано в одному місці: посилання, новини, галерея, правила і швидкі дії.
+                Перемикання — як “окремі екрани”, без скрол-стрибків.
               </div>
+
+              <div class="hero-cta">
+                <a class="btn" href="https://www.roblox.com/communities/426028883/Kyiv-M1-Reborn#!/about" target="_blank" rel="noopener">🚀 Roblox</a>
+                <a class="btn secondary" href="https://discord.gg/yfpzKqD2" target="_blank" rel="noopener">💬 Discord</a>
+                <button class="btn secondary" id="copyLinksBtn" type="button">📋 Лінки</button>
+                <button class="btn ghost" id="quickTourBtn" type="button">🎬 Tour</button>
+              </div>
+
+              <div class="hero-badges">
+                <div class="pill" data-go="#gallery"><i></i>Галерея</div>
+                <div class="pill" data-go="#news"><i class="blue"></i>Новини</div>
+                <div class="pill" data-open="modal-rules"><i class="orange"></i>Правила</div>
+                <div class="pill" data-go="#community"><i class="green"></i>Комʼюніті</div>
+              </div>
+            </div>
+
+            <div style="display:flex; align-items:center; justify-content:center">
+              <div class="orb" id="orb" aria-label="Ефект">
+                <div class="badge">
+                  <strong id="orbTitle">Join • Share • Build</strong>
+                  <span id="orbSub">press</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="grid">
+            <div class="card" data-open="modal-post">
+              <div class="shine"></div>
+              <h3>Швидкий пост</h3>
+              <p>Натисни — відкриється модалка з “анонсом”.</p>
+              <div class="tag"><i class="blue"></i>Open</div>
+            </div>
+
+            <div class="card" data-open="modal-shot">
+              <div class="shine"></div>
+              <h3>Фото перегляд</h3>
+              <p>Модалка з великим фото + кнопки.</p>
+              <div class="tag"><i class="red"></i>View</div>
+            </div>
+
+            <div class="card" data-go="#profile">
+              <div class="shine"></div>
+              <h3>Профіль</h3>
+              <p>Логін/нік/статус зберігається в браузері.</p>
+              <div class="tag"><i class="green"></i>Local</div>
             </div>
           </div>
         </div>
 
-      </div>
-    </section>
-
-    <!-- QUICK -->
-    <section class="section reveal">
-      <h2>Швидкі дії</h2>
-      <div class="lead">
-        Натискай — усе має працювати. Ніяких акаунтів і “покупок”.
-      </div>
-
-      <div class="grid">
-        <a class="card" href="https://www.roblox.com/communities/426028883/Kyiv-M1-Reborn#!/about" target="_blank" rel="noopener">
-          <div class="shine"></div>
-          <h3>Roblox комʼюніті</h3>
-          <p>Основна сторінка групи: опис, учасники, анонси.</p>
-          <div class="tag"><span class="dot"></span> Open</div>
-        </a>
-
-        <a class="card" href="https://discord.gg/yfpzKqD2" target="_blank" rel="noopener">
-          <div class="shine"></div>
-          <h3>Discord</h3>
-          <p>Новини, спілкування, підтримка, заявки.</p>
-          <div class="tag"><span class="dot blue"></span> Join</div>
-        </a>
-
-        <div class="card" id="scrollRules">
-          <div class="shine"></div>
-          <h3>Правила</h3>
-          <p>Коротко: токсик, спам, обхід банів — ні.</p>
-          <div class="tag"><span class="dot orange"></span> Перейти</div>
-        </div>
-      </div>
-    </section>
-
-    <!-- GALLERY -->
-    <section id="gallery" class="section reveal">
-      <h2>Галерея</h2>
-      <div class="lead">
-        Ти дав 4 фото — я вставив їх сюди.
-        <br>
-        <b>Важливо для GitHub Pages:</b> поклади файли в репо, наприклад <code>/assets/</code>, і назви як нижче (або зміни <code>src</code>).
-      </div>
-
-      <div class="gallery" style="margin-top:12px">
-        <div class="gallery-head">
-          <div>
-            <b>Скріншоти / атмосфера</b><br>
-            <small>Hover → зум. Tap на телефоні теж ок.</small>
-          </div>
-          <button class="btn secondary" id="shuffleBtn">Анімація</button>
-        </div>
-
-        <div class="gallery-grid" id="galleryGrid">
-          <!-- В GitHub: створити /assets і покласти туди картинки -->
-          <figure class="shot">
-            <img src="./assets/shot1.png" alt="Shot 1">
-            <div class="cap">
-              <div>
-                <div class="t">Тунель</div>
-                <div class="s">Mood / Lighting</div>
-              </div>
-            </div>
-          </figure>
-
-          <figure class="shot">
-            <img src="./assets/shot2.png" alt="Shot 2">
-            <div class="cap">
-              <div>
-                <div class="t">Станція</div>
-                <div class="s">Architecture</div>
-              </div>
-            </div>
-          </figure>
-
-          <figure class="shot">
-            <img src="./assets/shot3.png" alt="Shot 3">
-            <div class="cap">
-              <div>
-                <div class="t">Поїзд</div>
-                <div class="s">Detail</div>
-              </div>
-            </div>
-          </figure>
-
-          <figure class="shot">
-            <img src="./assets/shot4.png" alt="Shot 4">
-            <div class="cap">
-              <div>
-                <div class="t">Інтерʼєр</div>
-                <div class="s">Style</div>
-              </div>
-            </div>
-          </figure>
-        </div>
-      </div>
-
-      <div style="margin-top:10px;color:var(--muted);font-size:12px;line-height:1.6">
-        Якщо хочеш — додам “карусель” замість сітки. Але сітка краще для мобіли і швидше вантажиться.
-      </div>
-    </section>
-
-    <!-- COMMUNITY -->
-    <section id="community" class="section reveal">
-      <h2>Комʼюніті</h2>
-      <div class="lead">
-        Тут зібрані всі точки входу. Можеш додати ще YouTube/TikTok/Instagram — скажеш, що саме.
-      </div>
-
-      <div class="grid" style="margin-top:14px">
         <!-- GALLERY -->
-<div class="section" id="gallery">
-  <h2 style="margin:16px 0 6px;font-size:18px">Галерея</h2>
-  <div style="color:var(--muted);font-size:13px;line-height:1.6">
-    Скріни з проєкту Kyiv M1 Reborn.
-  </div>
+        <div class="view" id="view-gallery" data-title="Галерея" data-sub="media" data-dot="blue">
+          <div class="grid" style="margin-top:0">
+            <div class="card" data-action="shuffle">
+              <div class="shine"></div>
+              <h3>Анімація сітки</h3>
+              <p>Легкий “shake/zoom” ефект для фото.</p>
+              <div class="tag"><i class="orange"></i>Run</div>
+            </div>
+            <div class="card" data-action="slideshow">
+              <div class="shine"></div>
+              <h3>Слайд-шоу</h3>
+              <p>Переключає фото в модалці по таймеру.</p>
+              <div class="tag"><i class="blue"></i>Auto</div>
+            </div>
+            <div class="card" data-action="openShot">
+              <div class="shine"></div>
+              <h3>Відкрити фото</h3>
+              <p>Швидкий перегляд великого зображення.</p>
+              <div class="tag"><i class="red"></i>View</div>
+            </div>
+          </div>
 
-  <div class="shots" style="margin-top:14px">
-    <figure class="shot">
-      <img src="./assets/egreg.png" alt="Shot 1">
-      <div class="cap">
-        <div>
-          <div class="t">Тунель</div>
-          <div class="s">Mood / Lighting</div>
-        </div>
-      </div>
-    </figure>
+          <div class="gallery">
+            <div class="gallery-head">
+              <div>
+                <b>Скріншоти</b><br>
+                <small>Клік по фото → повний перегляд</small>
+              </div>
+              <div style="display:flex; gap:8px; flex-wrap:wrap; justify-content:flex-end">
+                <button class="btn secondary small" data-action="shuffle" type="button">✨ FX</button>
+                <button class="btn ghost small" data-action="slideshow" type="button">▶️ Show</button>
+              </div>
+            </div>
 
-    <figure class="shot">
-      <img src="./assets/gegeg.png" alt="Shot 2">
-      <div class="cap">
-        <div>
-          <div class="t">Станція</div>
-          <div class="s">Architecture</div>
-        </div>
-      </div>
-    </figure>
+            <div class="gallery-grid" id="galleryGrid">
+              <figure class="shot" data-img="./assets/egreg.png" data-title="Тунель" data-sub="mood">
+                <img src="./assets/egreg.png" alt="Тунель">
+                <div class="cap"><div><div class="t">Тунель</div><div class="s">Mood</div></div></div>
+              </figure>
 
-    <figure class="shot">
-      <img src="./assets/image.png" alt="Shot 3">
-      <div class="cap">
-        <div>
-          <div class="t">Інтерʼєр</div>
-          <div class="s">Style</div>
-        </div>
-      </div>
-    </figure>
-  </div>
-</div>
-        <a class="card" href="https://www.roblox.com/communities/426028883/Kyiv-M1-Reborn#!/about" target="_blank" rel="noopener">
-          <div class="shine"></div>
-          <h3>Roblox Group</h3>
-          <p>Головне посилання на групу.</p>
-          <div class="tag"><span class="dot"></span> Open</div>
-        </a>
+              <figure class="shot" data-img="./assets/gegeg.png" data-title="Станція" data-sub="architecture">
+                <img src="./assets/gegeg.png" alt="Станція">
+                <div class="cap"><div><div class="t">Станція</div><div class="s">Architecture</div></div></div>
+              </figure>
 
-        <a class="card" href="https://discord.gg/yfpzKqD2" target="_blank" rel="noopener">
-          <div class="shine"></div>
-          <h3>Discord Invite</h3>
-          <p>Запрошення в Discord-сервер.</p>
-          <div class="tag"><span class="dot blue"></span> Join</div>
-        </a>
+              <figure class="shot" data-img="./assets/image.png" data-title="Інтерʼєр" data-sub="style">
+                <img src="./assets/image.png" alt="Інтерʼєр">
+                <div class="cap"><div><div class="t">Інтерʼєр</div><div class="s">Style</div></div></div>
+              </figure>
 
-        <div class="card" id="copyDiscordCard">
-          <div class="shine"></div>
-          <h3>Скопіювати Discord</h3>
-          <p>Зручно кинути другу в месенджер.</p>
-          <div class="tag"><span class="dot orange"></span> Copy</div>
-        </div>
-      </div>
-    </section>
-
-    <!-- RULES -->
-    <section id="rules" class="section reveal">
-      <h2>Правила</h2>
-      <div class="lead">
-        Мінімальні правила комʼюніті (можеш змінити текст як хочеш).
-      </div>
-
-      <div class="rules" style="margin-top:12px">
-        <ul>
-          <li><b>Без токсичності:</b> образи, цькування, дискримінація — бан.</li>
-          <li><b>Без спаму:</b> флуд, реклама, самопіар без дозволу — видалення/мут.</li>
-          <li><b>Без обману:</b> шахрайство, фейкові “роздачі”, скам-лінки — бан.</li>
-          <li><b>Поважай модерацію:</b> апеляції — в адекватній формі, без “наїздів”.</li>
-          <li><b>Без NSFW:</b> контент 18+ не постимо.</li>
-          <li><b>Без обходу покарань:</b> твіни/обхід бану — перманент.</li>
-        </ul>
-
-        <div class="note">
-          Порада: винеси детальні правила в Discord (канал #rules), а тут залиш короткий “конспект”.
+              <figure class="shot" data-img="./assets/egreg.png" data-title="Тунель" data-sub="alt">
+                <img src="./assets/egreg.png" alt="Тунель 2">
+                <div class="cap"><div><div class="t">Тунель</div><div class="s">Alt</div></div></div>
+              </figure>
+            </div>
+          </div>
         </div>
 
-        <div style="margin-top:12px; display:flex; gap:10px; flex-wrap:wrap">
-          <a class="btn" href="https://discord.gg/yfpzKqD2" target="_blank" rel="noopener">Перейти в Discord</a>
-          <button class="btn secondary" id="copyRulesBtn">Скопіювати правила</button>
-        </div>
-      </div>
-    </section>
+        <!-- NEWS -->
+        <div class="view" id="view-news" data-title="Новини" data-sub="updates" data-dot="orange">
+          <div class="grid" style="margin-top:0">
+            <div class="card" data-action="newPost">
+              <div class="shine"></div>
+              <h3>Створити анонс</h3>
+              <p>Швидкий пост в модалці (локально).</p>
+              <div class="tag"><i class="green"></i>Create</div>
+            </div>
+            <div class="card" data-action="pin">
+              <div class="shine"></div>
+              <h3>Закріпити</h3>
+              <p>Позначає останній пост як pinned.</p>
+              <div class="tag"><i class="blue"></i>Pin</div>
+            </div>
+            <div class="card" data-action="clearPosts">
+              <div class="shine"></div>
+              <h3>Очистити</h3>
+              <p>Скидає локальні новини.</p>
+              <div class="tag"><i class="red"></i>Reset</div>
+            </div>
+          </div>
 
-    <!-- ABOUT -->
-    <section id="about" class="section reveal">
-      <h2>Про нас</h2>
-      <div class="lead">
-        Kyiv M1 Reborn — комʼюніті-проєкт у Roblox. Ця сторінка — легкий портал на GitHub Pages:
-        швидко, чисто, без зайвого.
-      </div>
-
-      <div class="grid" style="margin-top:14px">
-        <div class="card" data-toast="Підкажи: що додати? YouTube / TikTok / FAQ / News?">
-          <div class="shine"></div>
-          <h3>Що далі</h3>
-          <p>Можу додати блок “Новини”, “FAQ”, “Команда”, “Таймлайн”, “Roadmap”.</p>
-          <div class="tag"><span class="dot"></span> Idea</div>
-        </div>
-
-        <div class="card" data-toast="Лінки вже вшиті в кнопки зверху">
-          <div class="shine"></div>
-          <h3>Посилання</h3>
-          <p>Roblox комʼюніті + Discord. Натискай зверху.</p>
-          <div class="tag"><span class="dot blue"></span> Ready</div>
+          <div class="news" id="newsList" aria-label="Список новин"></div>
         </div>
 
-        <div class="card" data-toast="Сітка + lazy loading = швидко на телефоні">
-          <div class="shine"></div>
-          <h3>Оптимізація</h3>
-          <p>Меню-бургер, адаптив, легкі анімації, без важких бібліотек.</p>
-          <div class="tag"><span class="dot orange"></span> Mobile</div>
-        </div>
-      </div>
-    </section>
+        <!-- COMMUNITY -->
+        <div class="view" id="view-community" data-title="Комʼюніті" data-sub="links" data-dot="green">
+          <div class="grid" style="margin-top:0">
+            <a class="card" href="https://discord.gg/yfpzKqD2" target="_blank" rel="noopener">
+              <div class="shine"></div>
+              <h3>Discord</h3>
+              <p>Чат, новини, канали, підтримка.</p>
+              <div class="tag"><i class="blue"></i>Join</div>
+            </a>
 
-    <div style="height:14px"></div>
+            <a class="card" href="https://www.roblox.com/communities/426028883/Kyiv-M1-Reborn#!/about" target="_blank" rel="noopener">
+              <div class="shine"></div>
+              <h3>Roblox Group</h3>
+              <p>Група, учасники, опис.</p>
+              <div class="tag"><i class="red"></i>Open</div>
+            </a>
+
+            <div class="card" data-open="modal-links">
+              <div class="shine"></div>
+              <h3>Скопіювати лінки</h3>
+              <p>Один клік → готовий пакет.</p>
+              <div class="tag"><i class="orange"></i>Copy</div>
+            </div>
+          </div>
+
+          <div class="rules">
+            <b style="font-size:13px">Швидкі кнопки</b>
+            <div class="row">
+              <button class="btn secondary" id="copyDiscordBtn" type="button">📎 Скопіювати Discord</button>
+              <button class="btn secondary" id="copyRobloxBtn" type="button">📎 Скопіювати Roblox</button>
+              <button class="btn ghost" data-open="modal-support" type="button">🛠️ Support</button>
+              <button class="btn ghost" data-open="modal-rules" type="button">📌 Rules</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- RULES -->
+        <div class="view" id="view-rules" data-title="Правила" data-sub="safety" data-dot="red">
+          <div class="rules">
+            <b style="font-size:13px">Коротко і жорстко</b>
+            <ul>
+              <li><b>Без токсичності:</b> образи/цькування/дискримінація — бан.</li>
+              <li><b>Без спаму:</b> флуд, реклама, самопіар без дозволу — мут/видалення.</li>
+              <li><b>Без скаму:</b> фейкові “роздачі”, підозрілі лінки — бан.</li>
+              <li><b>Без NSFW:</b> 18+ контент — заборонено.</li>
+              <li><b>Без обходу покарань:</b> твіни/обхід — перманент.</li>
+            </ul>
+            <div class="note">
+              Апеляції — тільки адекватно. Модерація = фінальне слово.
+            </div>
+            <div class="row">
+              <button class="btn secondary" id="copyRulesBtn" type="button">📋 Скопіювати</button>
+              <button class="btn ghost" data-open="modal-rules" type="button">📌 Вікно</button>
+              <a class="btn" href="https://discord.gg/yfpzKqD2" target="_blank" rel="noopener">Discord</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- ABOUT -->
+        <div class="view" id="view-about" data-title="Про нас" data-sub="info" data-dot="blue">
+          <div class="grid" style="margin-top:0">
+            <div class="card" data-open="modal-shot">
+              <div class="shine"></div>
+              <h3>Атмосфера</h3>
+              <p>Показати превʼю + кнопки дій.</p>
+              <div class="tag"><i class="blue"></i>Open</div>
+            </div>
+            <div class="card" data-open="modal-support">
+              <div class="shine"></div>
+              <h3>Контакт</h3>
+              <p>Швидко написати модерам (через Discord).</p>
+              <div class="tag"><i class="green"></i>Help</div>
+            </div>
+            <div class="card" data-action="easter">
+              <div class="shine"></div>
+              <h3>Secret</h3>
+              <p>Маленький “скритий” ефект.</p>
+              <div class="tag"><i class="red"></i>Try</div>
+            </div>
+          </div>
+
+          <div class="rules">
+            <b style="font-size:13px">Що це</b>
+            <div style="color:var(--muted); font-size:13px; line-height:1.65; margin-top:8px">
+              Це хаб для комʼюніті: швидкі переходи, медіа, новини, правила, профіль.
+              Всі “пости/логін” працюють локально в браузері.
+            </div>
+            <div class="row">
+              <button class="btn secondary" data-go="#profile" type="button">👤 Профіль</button>
+              <button class="btn ghost" data-open="modal-links" type="button">🔗 Лінки</button>
+              <button class="btn ghost" id="resetAllBtn" type="button">🧹 Reset</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- PROFILE -->
+        <div class="view" id="view-profile" data-title="Профіль" data-sub="login" data-dot="green">
+          <div class="profile">
+            <div class="box">
+              <h4>Статус</h4>
+              <p id="profileStatus">Ти не залогінений.</p>
+              <div class="row">
+                <button class="btn secondary" id="openLoginFromProfile" type="button">🔐 Увійти</button>
+                <button class="btn ghost" id="logoutBtn" type="button">🚪 Вийти</button>
+              </div>
+              <div class="divider"></div>
+              <div class="row">
+                <button class="btn ghost" id="setTagBtn" type="button">🏷️ Set Tag</button>
+                <button class="btn ghost" id="copyProfileBtn" type="button">📎 Copy</button>
+              </div>
+            </div>
+
+            <div class="box">
+              <h4>Налаштування</h4>
+              <p>Ефекти та зручності (локально).</p>
+
+              <div class="row">
+                <button class="btn secondary" id="toggleSafeBtn" type="button">🛡️ Safe: On</button>
+                <button class="btn secondary" id="toggleFxBtn" type="button">✨ FX: On</button>
+              </div>
+
+              <div class="field">
+                <label for="bio">Bio</label>
+                <input id="bio" placeholder="Коротко про себе (видно тільки тобі)" />
+              </div>
+
+              <div class="row">
+                <button class="btn ghost" id="saveBioBtn" type="button">💾 Save</button>
+                <button class="btn ghost" id="clearBioBtn" type="button">🗑️ Clear</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </section>
+    </div>
   </main>
 
   <footer>
     <div class="container">
-      <div style="display:flex; gap:12px; align-items:center; justify-content:space-between; flex-wrap:wrap">
+      <div class="footer-inner">
         <div>© <span id="year"></span> Kyiv M1 Reborn</div>
-        <div style="display:flex; gap:10px; flex-wrap:wrap">
-          <a href="https://discord.gg/yfpzKqD2" target="_blank" rel="noopener">Discord</a>
+        <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center">
+          <a href="#home">Home</a>
           <span style="opacity:.35">•</span>
-          <a href="https://www.roblox.com/communities/426028883/Kyiv-M1-Reborn#!/about" target="_blank" rel="noopener">Roblox</a>
+          <a href="#gallery">Gallery</a>
+          <span style="opacity:.35">•</span>
+          <a href="#news">News</a>
+          <span style="opacity:.35">•</span>
+          <a href="https://discord.gg/yfpzKqD2" target="_blank" rel="noopener">Discord</a>
         </div>
       </div>
     </div>
   </footer>
 
+  <!-- MODALS -->
+  <div class="modal" id="modalShot" role="dialog" aria-modal="true" aria-label="Фото">
+    <div class="modal-card">
+      <div class="modal-head">
+        <b id="shotTitle">Фото</b>
+        <button class="modal-close" data-close type="button">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="modal-grid">
+          <div class="preview">
+            <img id="shotImg" src="./assets/egreg.png" alt="preview">
+            <div class="p-cap">
+              <div>
+                <b id="shotCap">Kyiv M1 Reborn</b><br>
+                <span id="shotSub">media</span>
+              </div>
+              <div style="display:flex; gap:8px; flex-wrap:wrap; justify-content:flex-end">
+                <button class="btn secondary small" id="nextShotBtn" type="button">➡️ Next</button>
+                <button class="btn ghost small" id="copyShotBtn" type="button">📎 Copy</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="box">
+            <h4>Дії</h4>
+            <p>Кнопки для кліку. Частина відкриває екрани, частина копіює.</p>
+            <div class="row">
+              <button class="btn secondary" data-go="#gallery" type="button">📷 Gallery</button>
+              <button class="btn secondary" data-go="#news" type="button">📰 News</button>
+              <button class="btn ghost" id="shakeModalBtn" type="button">✨ Shake</button>
+            </div>
+            <div class="divider"></div>
+            <div class="row">
+              <button class="btn ghost" data-open="modal-links" type="button">🔗 Links</button>
+              <button class="btn ghost" data-open="modal-support" type="button">🛠️ Support</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="modalLinks" role="dialog" aria-modal="true" aria-label="Лінки">
+    <div class="modal-card">
+      <div class="modal-head">
+        <b>Лінки</b>
+        <button class="modal-close" data-close type="button">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="box">
+          <h4>Пакет</h4>
+          <p>Натисни кнопку — і все буде в буфері обміну.</p>
+          <div class="row">
+            <button class="btn secondary" id="copyLinksPackBtn" type="button">📋 Copy Pack</button>
+            <button class="btn ghost" id="copyDiscordOnlyBtn" type="button">📎 Discord</button>
+            <button class="btn ghost" id="copyRobloxOnlyBtn" type="button">📎 Roblox</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="modalSupport" role="dialog" aria-modal="true" aria-label="Підтримка">
+    <div class="modal-card">
+      <div class="modal-head">
+        <b>Підтримка</b>
+        <button class="modal-close" data-close type="button">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="box">
+          <h4>Швидкий контакт</h4>
+          <p>Скопіюй шаблон і відправ в Discord модерам.</p>
+          <div class="row">
+            <button class="btn secondary" id="copySupportBtn" type="button">📋 Copy шаблон</button>
+            <a class="btn ghost" href="https://discord.gg/yfpzKqD2" target="_blank" rel="noopener">Відкрити Discord</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="modalPost" role="dialog" aria-modal="true" aria-label="Пост">
+    <div class="modal-card">
+      <div class="modal-head">
+        <b>Новий анонс (локально)</b>
+        <button class="modal-close" data-close type="button">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="modal-grid">
+          <div class="box">
+            <h4>Заголовок</h4>
+            <input id="postTitle" placeholder="Напр: Оновлення метро / івент / конкурс" />
+            <div class="field">
+              <label for="postBody">Текст</label>
+              <input id="postBody" placeholder="Коротко що відбулося (1-2 речення)" />
+            </div>
+            <div class="row">
+              <button class="btn secondary" id="savePostBtn" type="button">💾 Зберегти</button>
+              <button class="btn ghost" id="demoPostBtn" type="button">✨ Demo</button>
+            </div>
+          </div>
+
+          <div class="box">
+            <h4>Підказка</h4>
+            <p>Пости зберігаються в браузері. На іншому компʼютері їх не буде — це ок для порталу.</p>
+            <div class="row">
+              <button class="btn ghost" data-go="#news" type="button">📰 Відкрити News</button>
+              <button class="btn ghost" id="pinLatestBtn" type="button">📌 Pin Latest</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="modalRules" role="dialog" aria-modal="true" aria-label="Правила">
+    <div class="modal-card">
+      <div class="modal-head">
+        <b>Правила</b>
+        <button class="modal-close" data-close type="button">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="rules" style="margin-top:0">
+          <ul>
+            <li><b>Без токсичності:</b> бан.</li>
+            <li><b>Без спаму/реклами:</b> мут/видалення.</li>
+            <li><b>Без скаму:</b> бан.</li>
+            <li><b>Без NSFW:</b> бан.</li>
+            <li><b>Без обходу банів:</b> перманент.</li>
+          </ul>
+          <div class="row">
+            <button class="btn secondary" id="copyRulesModalBtn" type="button">📋 Copy</button>
+            <button class="btn ghost" data-go="#rules" type="button">➡️ На екран</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="modalLogin" role="dialog" aria-modal="true" aria-label="Логін">
+    <div class="modal-card">
+      <div class="modal-head">
+        <b>Логін</b>
+        <button class="modal-close" data-close type="button">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="modal-grid">
+          <div class="box">
+            <h4>Нік</h4>
+            <input id="loginName" placeholder="Напр: Kabatchok" />
+            <div class="field">
+              <label for="loginPass">Пароль (локально)</label>
+              <input id="loginPass" type="password" placeholder="будь-який (для виду)" />
+            </div>
+            <div class="row">
+              <button class="btn secondary" id="doLoginBtn" type="button">✅ Увійти</button>
+              <button class="btn ghost" id="doGuestBtn" type="button">👻 Як гість</button>
+            </div>
+          </div>
+
+          <div class="box">
+            <h4>Що робить логін</h4>
+            <p>Зберігає твій нік/біо/тег у браузері і показує в панелі. Ніяких серверів.</p>
+            <div class="row">
+              <button class="btn ghost" id="wipeUserBtn" type="button">🧹 Очистити</button>
+              <button class="btn ghost" data-go="#profile" type="button">👤 Профіль</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="modalActions" role="dialog" aria-modal="true" aria-label="Actions">
+    <div class="modal-card">
+      <div class="modal-head">
+        <b>Actions</b>
+        <button class="modal-close" data-close type="button">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="grid" style="margin-top:0">
+          <div class="card" data-go="#home"><div class="shine"></div><h3>Home</h3><p>Перейти на головний екран.</p><div class="tag"><i class="red"></i>Go</div></div>
+          <div class="card" data-go="#gallery"><div class="shine"></div><h3>Gallery</h3><p>Фото + перегляд.</p><div class="tag"><i class="blue"></i>Go</div></div>
+          <div class="card" data-go="#news"><div class="shine"></div><h3>News</h3><p>Пости та анонси.</p><div class="tag"><i class="orange"></i>Go</div></div>
+          <div class="card" data-open="modal-login"><div class="shine"></div><h3>Login</h3><p>Профіль/нік/біо.</p><div class="tag"><i class="green"></i>Open</div></div>
+          <div class="card" data-open="modal-links"><div class="shine"></div><h3>Links</h3><p>Копіювання лінків.</p><div class="tag"><i class="blue"></i>Copy</div></div>
+          <div class="card" data-open="modal-support"><div class="shine"></div><h3>Support</h3><p>Шаблон звернення.</p><div class="tag"><i class="red"></i>Help</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <script>
     const $ = (q, el=document) => el.querySelector(q);
     const $$ = (q, el=document) => [...el.querySelectorAll(q)];
 
+    const LINKS = {
+      roblox: "https://www.roblox.com/communities/426028883/Kyiv-M1-Reborn#!/about",
+      discord: "https://discord.gg/yfpzKqD2"
+    };
+
+    const STORE_KEYS = {
+      user: "km1_user_v1",
+      posts: "km1_posts_v1",
+      bio: "km1_bio_v1",
+      fx: "km1_fx_v1",
+      safe: "km1_safe_v1",
+      sound: "km1_sound_v1",
+      tag: "km1_tag_v1"
+    };
+
+    const VIEWS = ["home","gallery","news","community","rules","about","profile"];
+
+    // toast
     function toast(msg){
       const t = $("#toast");
       $("#toastText").textContent = msg;
@@ -890,28 +1498,46 @@
       toast._t = setTimeout(()=>t.classList.remove("show"), 1600);
     }
 
-    function copy(text){
-      navigator.clipboard?.writeText(text).then(
-        ()=>toast("Скопійовано ✅"),
-        ()=>toast("Clipboard недоступний")
-      );
+    async function copy(text){
+      try{
+        await navigator.clipboard.writeText(text);
+        toast("Скопійовано ✅");
+      }catch{
+        toast("Clipboard недоступний");
+      }
     }
 
-    // burger menu
+    // sound (simple click beep)
+    let soundOn = true;
+    function loadSound(){
+      const v = localStorage.getItem(STORE_KEYS.sound);
+      soundOn = v === null ? true : (v === "1");
+      $("#soundBtn").textContent = soundOn ? "🔊 Звук" : "🔈 Звук";
+    }
+    function beep(){
+      if(!soundOn) return;
+      try{
+        const ctx = new (window.AudioContext || window.webkitAudioContext)();
+        const o = ctx.createOscillator();
+        const g = ctx.createGain();
+        o.type = "sine";
+        o.frequency.value = 620;
+        g.gain.value = 0.06;
+        o.connect(g); g.connect(ctx.destination);
+        o.start();
+        setTimeout(()=>{ o.stop(); ctx.close(); }, 60);
+      }catch{}
+    }
+
+    // burger
     const burger = $("#burger");
     const nav = $("#nav");
     burger.addEventListener("click", ()=>{
       const open = nav.classList.toggle("open");
       burger.classList.toggle("open", open);
       burger.setAttribute("aria-expanded", open ? "true" : "false");
+      beep();
     });
-
-    // smooth scroll + active link
-    function setActive(hash){
-      $$("#nav a").forEach(a=>{
-        a.classList.toggle("active", a.getAttribute("href") === hash);
-      });
-    }
 
     function closeNavOnMobile(){
       if (window.matchMedia("(max-width: 720px)").matches){
@@ -921,115 +1547,685 @@
       }
     }
 
-    $$("#nav a[data-link]").forEach(a=>{
-      a.addEventListener("click",(e)=>{
+    // router
+    function normHash(){
+      const h = (location.hash || "#home").toLowerCase();
+      return VIEWS.includes(h.slice(1)) ? h : "#home";
+    }
+
+    function setActiveNav(hash){
+      $$("#nav a[data-route]").forEach(a=>{
+        a.classList.toggle("active", a.getAttribute("data-route") === hash);
+      });
+    }
+
+    function setCrumb(viewId){
+      const view = $("#view-" + viewId);
+      if(!view) return;
+      const title = view.dataset.title || "—";
+      const sub = view.dataset.sub || "";
+      const dot = view.dataset.dot || "red";
+
+      $("#crumbTitle").textContent = title;
+      $("#crumbSub").textContent = sub;
+
+      const d = $("#crumbDot");
+      d.style.background = dot === "blue" ? "var(--blue)"
+        : dot === "orange" ? "var(--orange)"
+        : dot === "green" ? "var(--green)"
+        : "var(--red)";
+    }
+
+    function showView(hash){
+      const id = hash.slice(1);
+      $$(".view").forEach(v=>v.classList.remove("active"));
+      const target = $("#view-" + id);
+      if(target) target.classList.add("active");
+      setActiveNav(hash);
+      setCrumb(id);
+    }
+
+    function go(hash){
+      location.hash = hash;
+    }
+
+    window.addEventListener("hashchange", ()=>{
+      const h = normHash();
+      if(location.hash !== h) history.replaceState(null,"",h);
+      showView(h);
+      closeNavOnMobile();
+      beep();
+    });
+
+    // nav click (no scroll)
+    $$("#nav a[data-route]").forEach(a=>{
+      a.addEventListener("click", (e)=>{
         e.preventDefault();
-        const id = a.getAttribute("href");
-        const el = $(id);
-        if (!el) return;
-        el.scrollIntoView({behavior:"smooth", block:"start"});
-        history.replaceState(null,"",id);
-        setActive(id);
-        closeNavOnMobile();
+        go(a.getAttribute("data-route"));
       });
     });
 
-    $("#goHome").addEventListener("click", ()=>{
-      $("#home").scrollIntoView({behavior:"smooth"});
-      history.replaceState(null,"","#home");
-      setActive("#home");
-    });
-    $("#goHome").addEventListener("keydown",(e)=>{
-      if(e.key==="Enter" || e.key===" "){
-        e.preventDefault();
-        $("#goHome").click();
+    // dataset navigation buttons
+    document.addEventListener("click", (e)=>{
+      const t = e.target.closest("[data-go]");
+      if(t){
+        const h = t.getAttribute("data-go");
+        if(h) go(h);
       }
     });
 
-    // orb click animation
+    // modals
+    const MODALS = {
+      "modal-shot": $("#modalShot"),
+      "modal-links": $("#modalLinks"),
+      "modal-support": $("#modalSupport"),
+      "modal-post": $("#modalPost"),
+      "modal-rules": $("#modalRules"),
+      "modal-login": $("#modalLogin"),
+      "modal-actions": $("#modalActions")
+    };
+
+    function openModal(key){
+      const m = MODALS[key];
+      if(!m) return;
+      m.classList.add("show");
+      document.body.style.overflow = "hidden";
+      beep();
+    }
+    function closeModal(el){
+      el.classList.remove("show");
+      document.body.style.overflow = "";
+    }
+    function closeAllModals(){
+      Object.values(MODALS).forEach(m=>m.classList.remove("show"));
+      document.body.style.overflow = "";
+    }
+
+    document.addEventListener("click", (e)=>{
+      const o = e.target.closest("[data-open]");
+      if(o){
+        const key = o.getAttribute("data-open");
+        if(key === "panel-shortcuts"){ openModal("modal-actions"); return; }
+        if(key === "panel-music"){ $("#soundBtn").click(); return; }
+        if(key === "panel-theme"){ $("#fxBtn").click(); return; }
+        if(key === "panel-contact"){ openModal("modal-support"); return; }
+        openModal(key);
+      }
+      if(e.target.matches(".modal") || e.target.closest("[data-close]")){
+        const m = e.target.closest(".modal") || e.target;
+        if(m.classList.contains("modal")) closeModal(m);
+      }
+    });
+
+    window.addEventListener("keydown", (e)=>{
+      if(e.key === "Escape") closeAllModals();
+    });
+
+    // orb click fx
     $("#orb").addEventListener("click", ()=>{
       $("#orb").animate(
         [
           { transform:"translateY(0) rotate(-2deg) scale(1)" },
-          { transform:"translateY(-8px) rotate(6deg) scale(1.04)" },
+          { transform:"translateY(-10px) rotate(6deg) scale(1.05)" },
           { transform:"translateY(0) rotate(-2deg) scale(1)" }
         ],
         { duration: 560, easing: "cubic-bezier(.2,.9,.2,1)" }
       );
-      toast("🚇 Kyiv M1 Reborn");
+      $("#orbTitle").textContent = "🚇 Metro Mode";
+      $("#orbSub").textContent = "active";
+      setTimeout(()=>{ $("#orbTitle").textContent = "Join • Share • Build"; $("#orbSub").textContent = "press"; }, 900);
+      toast("Kyiv M1 Reborn");
+      beep();
     });
 
-    // quick pills toasts
-    $$(".pill[data-toast], .card[data-toast]").forEach(el=>{
-      el.addEventListener("click", ()=> toast(el.dataset.toast || "OK"));
+    // fx toggles
+    function loadFx(){
+      const v = localStorage.getItem(STORE_KEYS.fx);
+      const on = v === null ? true : (v === "1");
+      document.documentElement.dataset.fx = on ? "1" : "0";
+      $("#toggleFxBtn").textContent = on ? "✨ FX: On" : "✨ FX: Off";
+    }
+    function loadSafe(){
+      const v = localStorage.getItem(STORE_KEYS.safe);
+      const on = v === null ? true : (v === "1");
+      document.documentElement.dataset.safe = on ? "1" : "0";
+      $("#toggleSafeBtn").textContent = on ? "🛡️ Safe: On" : "🛡️ Safe: Off";
+    }
+
+    $("#fxBtn").addEventListener("click", ()=>{
+      const cur = (localStorage.getItem(STORE_KEYS.fx) ?? "1") === "1";
+      localStorage.setItem(STORE_KEYS.fx, cur ? "0" : "1");
+      loadFx();
+      toast(cur ? "FX вимкнено" : "FX увімкнено");
+      beep();
     });
 
-    // scroll to rules
-    $("#scrollRules").addEventListener("click", ()=>{
-      $("#rules").scrollIntoView({behavior:"smooth"});
-      history.replaceState(null,"","#rules");
-      setActive("#rules");
-      toast("Правила відкрито");
+    $("#toggleFxBtn").addEventListener("click", ()=> $("#fxBtn").click());
+
+    $("#toggleSafeBtn").addEventListener("click", ()=>{
+      const cur = (localStorage.getItem(STORE_KEYS.safe) ?? "1") === "1";
+      localStorage.setItem(STORE_KEYS.safe, cur ? "0" : "1");
+      loadSafe();
+      toast(cur ? "Safe вимкнено" : "Safe увімкнено");
+      beep();
     });
 
-    // copy links bundle
-    $("#copyLinksBtn").addEventListener("click", ()=>{
-      const pack =
-`Roblox: https://www.roblox.com/communities/426028883/Kyiv-M1-Reborn#!/about
-Discord: https://discord.gg/yfpzKqD2`;
-      copy(pack);
+    // sound button
+    $("#soundBtn").addEventListener("click", ()=>{
+      soundOn = !soundOn;
+      localStorage.setItem(STORE_KEYS.sound, soundOn ? "1" : "0");
+      loadSound();
+      toast(soundOn ? "Звук: On" : "Звук: Off");
     });
 
-    $("#copyDiscordCard").addEventListener("click", ()=> copy("https://discord.gg/yfpzKqD2"));
+    // copy pack
+    const PACK =
+`Roblox: ${LINKS.roblox}
+Discord: ${LINKS.discord}`;
 
-    $("#copyRulesBtn").addEventListener("click", ()=>{
-      const rules =
-`Kyiv M1 Reborn — правила:
-1) Без токсичності/образ.
-2) Без спаму/реклами.
-3) Без шахрайства/скаму.
-4) Поважай модерацію.
-5) Без NSFW.
-6) Без обходу банів.`;
-      copy(rules);
+    $("#copyLinksBtn").addEventListener("click", ()=> copy(PACK));
+    $("#copyAllBtn").addEventListener("click", ()=> copy(PACK));
+    $("#copyLinksPackBtn").addEventListener("click", ()=> copy(PACK));
+    $("#copyDiscordOnlyBtn").addEventListener("click", ()=> copy(LINKS.discord));
+    $("#copyRobloxOnlyBtn").addEventListener("click", ()=> copy(LINKS.roblox));
+    $("#copyDiscordBtn").addEventListener("click", ()=> copy(LINKS.discord));
+    $("#copyRobloxBtn").addEventListener("click", ()=> copy(LINKS.roblox));
+
+    // discord button dual (open/copy)
+    $("#discordBtn").addEventListener("click", async ()=>{
+      await copy(LINKS.discord);
+      window.open(LINKS.discord, "_blank", "noopener");
+      beep();
     });
 
+    // actions modal
+    $("#openModalBtn").addEventListener("click", ()=> openModal("modal-actions"));
 
-    $("#shuffleBtn").addEventListener("click", ()=>{
-      const shots = $$("#galleryGrid .shot");
-      shots.forEach((el, i)=>{
+    // stats actions
+    $$("[data-action]").forEach(el=>{
+      el.addEventListener("click", ()=>{
+        const a = el.getAttribute("data-action");
+        if(a === "ping") toast("Online");
+        if(a === "boost") toast("FX boosted");
+        if(a === "notify") toast("Notifications OK");
+        if(a === "safe") toast("Safe preset");
+        if(a === "shuffle") doShuffle();
+        if(a === "slideshow") startSlideshow();
+        if(a === "openShot") openShotFromList(0);
+        if(a === "newPost") openModal("modal-post");
+        if(a === "pin") pinLatest();
+        if(a === "clearPosts") clearPosts();
+        if(a === "easter") easter();
+        beep();
+      });
+    });
+
+    // gallery modal logic
+    const shots = [
+      {src:"./assets/egreg.png", title:"Тунель", sub:"mood"},
+      {src:"./assets/gegeg.png", title:"Станція", sub:"architecture"},
+      {src:"./assets/image.png", title:"Інтерʼєр", sub:"style"},
+      {src:"./assets/egreg.png", title:"Тунель", sub:"alt"},
+    ];
+    let shotIndex = 0;
+    let slideTimer = null;
+
+    function setShot(i){
+      shotIndex = (i + shots.length) % shots.length;
+      const s = shots[shotIndex];
+      $("#shotImg").src = s.src;
+      $("#shotTitle").textContent = s.title;
+      $("#shotCap").textContent = s.title;
+      $("#shotSub").textContent = s.sub;
+    }
+
+    function openShotFromList(i){
+      setShot(i);
+      openModal("modal-shot");
+    }
+
+    $("#galleryGrid").addEventListener("click", (e)=>{
+      const fig = e.target.closest(".shot");
+      if(!fig) return;
+      const src = fig.getAttribute("data-img");
+      const title = fig.getAttribute("data-title") || "Фото";
+      const sub = fig.getAttribute("data-sub") || "media";
+      const idx = shots.findIndex(x=>x.src===src && x.title===title);
+      setShot(idx >= 0 ? idx : 0);
+      $("#shotTitle").textContent = title;
+      $("#shotCap").textContent = title;
+      $("#shotSub").textContent = sub;
+      openModal("modal-shot");
+      beep();
+    });
+
+    $("#nextShotBtn").addEventListener("click", ()=>{
+      setShot(shotIndex + 1);
+      toast("Next");
+      beep();
+    });
+
+    $("#copyShotBtn").addEventListener("click", ()=>{
+      copy(shots[shotIndex].src);
+      beep();
+    });
+
+    $("#shakeModalBtn").addEventListener("click", ()=>{
+      const card = $("#modalShot .modal-card");
+      card.animate(
+        [
+          { transform:"translateY(0) rotate(0deg)" },
+          { transform:"translateY(-2px) rotate(0.5deg)" },
+          { transform:"translateY(2px) rotate(-0.5deg)" },
+          { transform:"translateY(0) rotate(0deg)" }
+        ],
+        { duration: 380, easing:"cubic-bezier(.2,.9,.2,1)" }
+      );
+      toast("FX");
+      beep();
+    });
+
+    function doShuffle(){
+      const els = $$("#galleryGrid .shot");
+      els.forEach((el, i)=>{
         el.animate(
           [
-            { transform:"translateY(0) scale(1)", filter:"brightness(1)" },
-            { transform:`translateY(${(i%2? -6:6)}px) scale(1.02)`, filter:"brightness(1.06)" },
-            { transform:"translateY(0) scale(1)", filter:"brightness(1)" }
+            { transform:"translateY(0) scale(1)" },
+            { transform:`translateY(${(i%2? -7:7)}px) scale(1.02)` },
+            { transform:"translateY(0) scale(1)" }
           ],
           { duration: 520, delay: i*60, easing:"cubic-bezier(.2,.9,.2,1)" }
         );
       });
-      toast("Галерея ✅");
+      toast("Галерея: FX");
+    }
+
+    function startSlideshow(){
+      openShotFromList(shotIndex);
+      clearInterval(slideTimer);
+      slideTimer = setInterval(()=> setShot(shotIndex + 1), 1400);
+      toast("Slideshow: On");
+      setTimeout(()=>{ clearInterval(slideTimer); slideTimer=null; toast("Slideshow: Off"); }, 7000);
+    }
+
+    // rules copy
+    const RULES_TXT =
+`Kyiv M1 Reborn — правила:
+1) Без токсичності/образ.
+2) Без спаму/реклами.
+3) Без скаму/шахрайства.
+4) Без NSFW.
+5) Без обходу банів.`;
+
+    $("#copyRulesBtn").addEventListener("click", ()=> copy(RULES_TXT));
+    $("#copyRulesModalBtn").addEventListener("click", ()=> copy(RULES_TXT));
+
+    // support template
+    $("#copySupportBtn").addEventListener("click", ()=>{
+      const user = getUser();
+      const name = user?.name ? user.name : "Guest";
+      const msg =
+`Support request:
+User: ${name}
+Topic: (short)
+Details: (what happened)
+Screens: (if any)`;
+      copy(msg);
+      beep();
     });
 
-    // reveal on scroll
-    const obs = new IntersectionObserver((entries)=>{
-      entries.forEach(e=>{
-        if (e.isIntersecting) e.target.classList.add("on");
-      });
-    }, { threshold: 0.12 });
-    $$(".reveal").forEach(el=>obs.observe(el));
+    // login/profile
+    function getUser(){
+      try{
+        const raw = localStorage.getItem(STORE_KEYS.user);
+        return raw ? JSON.parse(raw) : null;
+      }catch{ return null; }
+    }
+    function setUser(u){
+      localStorage.setItem(STORE_KEYS.user, JSON.stringify(u));
+      renderUser();
+    }
+    function wipeUser(){
+      localStorage.removeItem(STORE_KEYS.user);
+      localStorage.removeItem(STORE_KEYS.tag);
+      renderUser();
+    }
 
-    // initial state + active hash
+    function renderUser(){
+      const u = getUser();
+      const tag = localStorage.getItem(STORE_KEYS.tag) || "";
+      const line = u?.name ? `@${u.name}${tag ? " • "+tag : ""}` : "Гість";
+      $("#userLine").textContent = line;
+
+      const profileText = u?.name
+        ? `Ти залогінений як @${u.name}${tag ? " ("+tag+")" : ""}.`
+        : "Ти не залогінений.";
+      $("#profileStatus").textContent = profileText;
+
+      // nav label green dot stays; just keep it.
+    }
+
+    $("#loginBtn").addEventListener("click", ()=> openModal("modal-login"));
+    $("#openLoginFromProfile").addEventListener("click", ()=> openModal("modal-login"));
+
+    $("#doLoginBtn").addEventListener("click", ()=>{
+      const name = ($("#loginName").value || "").trim();
+      const pass = ($("#loginPass").value || "").trim(); // only for show
+      if(name.length < 2){
+        toast("Введи нік (2+ символи)");
+        return;
+      }
+      setUser({name, pass: pass ? "set" : ""});
+      closeModal($("#modalLogin"));
+      toast("Логін ✅");
+      beep();
+    });
+
+    $("#doGuestBtn").addEventListener("click", ()=>{
+      wipeUser();
+      closeModal($("#modalLogin"));
+      toast("Гість");
+      beep();
+    });
+
+    $("#wipeUserBtn").addEventListener("click", ()=>{
+      wipeUser();
+      toast("Очищено");
+      beep();
+    });
+
+    $("#logoutBtn").addEventListener("click", ()=>{
+      wipeUser();
+      toast("Вихід");
+      beep();
+    });
+
+    $("#setTagBtn").addEventListener("click", ()=>{
+      const u = getUser();
+      if(!u?.name){ toast("Спершу логін"); return; }
+      const cur = localStorage.getItem(STORE_KEYS.tag) || "";
+      const next = cur === "VIP" ? "Builder" : (cur === "Builder" ? "Mod" : (cur === "Mod" ? "" : "VIP"));
+      if(next) localStorage.setItem(STORE_KEYS.tag, next);
+      else localStorage.removeItem(STORE_KEYS.tag);
+      renderUser();
+      toast(next ? `Tag: ${next}` : "Tag: Off");
+      beep();
+    });
+
+    $("#copyProfileBtn").addEventListener("click", ()=>{
+      const u = getUser();
+      const tag = localStorage.getItem(STORE_KEYS.tag) || "";
+      const bio = localStorage.getItem(STORE_KEYS.bio) || "";
+      copy(`User: ${u?.name || "Guest"}${tag ? " • "+tag : ""}\nBio: ${bio || "-"}`);
+      beep();
+    });
+
+    // bio
+    function loadBio(){
+      const bio = localStorage.getItem(STORE_KEYS.bio) || "";
+      $("#bio").value = bio;
+    }
+    $("#saveBioBtn").addEventListener("click", ()=>{
+      localStorage.setItem(STORE_KEYS.bio, ($("#bio").value || "").trim());
+      toast("Bio saved");
+      beep();
+    });
+    $("#clearBioBtn").addEventListener("click", ()=>{
+      localStorage.removeItem(STORE_KEYS.bio);
+      $("#bio").value = "";
+      toast("Bio cleared");
+      beep();
+    });
+
+    // posts (local news)
+    function getPosts(){
+      try{
+        const raw = localStorage.getItem(STORE_KEYS.posts);
+        return raw ? JSON.parse(raw) : [];
+      }catch{ return []; }
+    }
+    function setPosts(p){
+      localStorage.setItem(STORE_KEYS.posts, JSON.stringify(p));
+      renderNews();
+    }
+
+    function seedPostsIfEmpty(){
+      const p = getPosts();
+      if(p.length) return;
+      const base = [
+        {title:"Update: метро-атмосфера", body:"Додано нові скріни та FX. Перевір галерею.", date: Date.now()-86400000*2, kind:"update", pinned:false},
+        {title:"Community", body:"Discord відкритий для заявок та новин.", date: Date.now()-86400000, kind:"info", pinned:false},
+        {title:"Правила", body:"Токсик/спам/скім — нуль терпимості.", date: Date.now()-7200000, kind:"rules", pinned:false},
+      ];
+      setPosts(base);
+    }
+
+    function kindBadge(kind){
+      if(kind==="update") return `<span class="badge2"><i class="blue"></i>Update</span>`;
+      if(kind==="rules") return `<span class="badge2"><i class="red"></i>Rules</span>`;
+      return `<span class="badge2"><i class="green"></i>Info</span>`;
+    }
+
+    function renderNews(){
+      const list = $("#newsList");
+      if(!list) return;
+      const posts = getPosts().slice().sort((a,b)=>{
+        if(!!b.pinned - !!a.pinned) return (b.pinned?1:0)-(a.pinned?1:0);
+        return b.date - a.date;
+      });
+
+      list.innerHTML = posts.map((p, idx)=>{
+        const d = new Date(p.date);
+        const dt = d.toLocaleString("uk-UA", {day:"2-digit", month:"2-digit", year:"numeric", hour:"2-digit", minute:"2-digit"});
+        return `
+          <div class="post" data-post="${idx}">
+            <h4>${escapeHtml(p.title)}${p.pinned ? " <span style='color:var(--orange)'>• pinned</span>" : ""}</h4>
+            <p>${escapeHtml(p.body)}</p>
+            <div class="meta">
+              ${kindBadge(p.kind)}
+              <span class="badge2"><i class="orange"></i>${dt}</span>
+              <span class="badge2"><i class="blue"></i>Click</span>
+            </div>
+          </div>
+        `;
+      }).join("");
+
+      // click on post -> modal post (edit-ish quick)
+      $$("#newsList .post").forEach(el=>{
+        el.addEventListener("click", ()=>{
+          const i = Number(el.getAttribute("data-post"));
+          const posts = getPosts().slice().sort((a,b)=>{
+            if(!!b.pinned - !!a.pinned) return (b.pinned?1:0)-(a.pinned?1:0);
+            return b.date - a.date;
+          });
+          const p = posts[i];
+          if(!p) return;
+          $("#postTitle").value = p.title;
+          $("#postBody").value = p.body;
+          openModal("modal-post");
+          toast("Edit (локально)");
+          beep();
+        });
+      });
+    }
+
+    function escapeHtml(s){
+      return String(s).replace(/[&<>"']/g, m => ({
+        "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
+      }[m]));
+    }
+
+    $("#savePostBtn").addEventListener("click", ()=>{
+      const title = ($("#postTitle").value || "").trim();
+      const body = ($("#postBody").value || "").trim();
+      if(title.length < 3 || body.length < 3){
+        toast("Заповни заголовок і текст");
+        return;
+      }
+      const posts = getPosts();
+      posts.unshift({title, body, date: Date.now(), kind:"update", pinned:false});
+      setPosts(posts);
+      closeModal($("#modalPost"));
+      toast("Пост додано ✅");
+      beep();
+    });
+
+    $("#demoPostBtn").addEventListener("click", ()=>{
+      $("#postTitle").value = "Event: нічний рейс";
+      $("#postBody").value = "Сьогодні тестуємо нові ефекти та скріни. Залітай!";
+      beep();
+    });
+
+    function pinLatest(){
+      const posts = getPosts();
+      if(!posts.length){ toast("Нема постів"); return; }
+      posts.forEach(p=>p.pinned=false);
+      posts[0].pinned = true;
+      setPosts(posts);
+      toast("Pinned ✅");
+      beep();
+    }
+    $("#pinLatestBtn").addEventListener("click", pinLatest);
+
+    function clearPosts(){
+      localStorage.removeItem(STORE_KEYS.posts);
+      seedPostsIfEmpty();
+      toast("Reset ✅");
+      beep();
+    }
+
+    // quick tour
+    $("#quickTourBtn").addEventListener("click", ()=>{
+      toast("Tour: Gallery → News → Profile");
+      go("#gallery");
+      setTimeout(()=>go("#news"), 800);
+      setTimeout(()=>go("#profile"), 1600);
+      beep();
+    });
+
+    // random button
+    $("#randomBtn").addEventListener("click", ()=>{
+      const pick = ["#home","#gallery","#news","#community","#rules","#about","#profile"];
+      go(pick[Math.floor(Math.random()*pick.length)]);
+      toast("Random");
+      beep();
+    });
+
+    // easter
+    function easter(){
+      document.body.animate(
+        [
+          { filter:"hue-rotate(0deg) saturate(1)" },
+          { filter:"hue-rotate(18deg) saturate(1.1)" },
+          { filter:"hue-rotate(0deg) saturate(1)" }
+        ],
+        { duration: 720, easing:"cubic-bezier(.2,.9,.2,1)" }
+      );
+      toast("⚡");
+    }
+
+    // reset all
+    $("#resetAllBtn").addEventListener("click", ()=>{
+      Object.values(STORE_KEYS).forEach(k=> localStorage.removeItem(k));
+      seedPostsIfEmpty();
+      loadFx(); loadSafe(); loadBio(); loadSound();
+      renderUser();
+      toast("Reset done");
+      beep();
+    });
+
+    // open login if trying profile while guest (optional: keep it free)
+    // nothing forced
+
+    // copy links from left quick action
+    $("#copyLinksPackBtn")?.addEventListener("click", ()=> copy(PACK));
+
+    // modal mapping for “data-open=modal-login” inside cards
+    document.addEventListener("click", (e)=>{
+      const x = e.target.closest("[data-open='modal-login']");
+      if(x) openModal("modal-login");
+    });
+
+    // login modal alias keys used in markup
+    // (we keep both keys for safety)
+    MODALS["modal-login"] = $("#modalLogin");
+
+    // shuffle click from gallery head buttons
+    document.addEventListener("click", (e)=>{
+      const b = e.target.closest("[data-action='shuffle']");
+      if(b) doShuffle();
+    });
+
+    // slideshow click
+    document.addEventListener("click", (e)=>{
+      const b = e.target.closest("[data-action='slideshow']");
+      if(b) startSlideshow();
+    });
+
+    // modal open shortcuts from left panel
+    document.addEventListener("click", (e)=>{
+      const g = e.target.closest("[data-go]");
+      if(g) closeNavOnMobile();
+    });
+
+    // open modals by id (in some places)
+    function resolveOpenKey(key){
+      if(key === "modal-login") return "modal-login";
+      return key;
+    }
+
+    // handle dataset open names that match our IDs
+    document.addEventListener("click", (e)=>{
+      const o = e.target.closest("[data-open]");
+      if(!o) return;
+      const raw = o.getAttribute("data-open");
+      const key = resolveOpenKey(raw);
+      if(MODALS[key]) openModal(key);
+    });
+
+    // login and posts
     function init(){
       $("#year").textContent = new Date().getFullYear();
-      const h = location.hash || "#home";
-      setActive(h);
 
-      // if opened with hash, scroll nicely
-      const target = $(h);
-      if (target) setTimeout(()=>target.scrollIntoView({behavior:"smooth"}), 120);
-      // first reveal immediately
-      setTimeout(()=>$("#home")?.classList.add("on"), 80);
+      seedPostsIfEmpty();
+      renderNews();
+
+      loadFx();
+      loadSafe();
+      loadBio();
+      loadSound();
+
+      renderUser();
+
+      const h = normHash();
+      if(location.hash !== h) history.replaceState(null,"",h);
+      showView(h);
+
+      // copy links from stage buttons
+      $("#copyLinksBtn").addEventListener("click", ()=>{ copy(PACK); beep(); });
+
+      $("#copyShotBtn").addEventListener("click", ()=> beep());
+
+      // open modal shortcuts
+      document.addEventListener("click", (e)=>{
+        const o = e.target.closest("[data-open]");
+        if(!o) return;
+        const key = o.getAttribute("data-open");
+        if(key && MODALS[key]) beep();
+      });
+
+      // modal shot default
+      setShot(0);
+
+      // login quick
+      $("#openLoginFromProfile").addEventListener("click", ()=> openModal("modal-login"));
+
+      // open modal post from cards
+      $("[data-open='modal-post']")?.addEventListener("click", ()=> openModal("modal-post"));
     }
+
+    // fix duplicate open handlers: keep one consistent entry point
+    // remove second global handler collision (already safe)
     init();
   </script>
 </body>

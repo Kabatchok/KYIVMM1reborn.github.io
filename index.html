@@ -740,6 +740,45 @@
       </div>
 
       <div class="grid" style="margin-top:14px">
+        <!-- GALLERY -->
+<div class="section" id="gallery">
+  <h2 style="margin:16px 0 6px;font-size:18px">Галерея</h2>
+  <div style="color:var(--muted);font-size:13px;line-height:1.6">
+    Скріни з проєкту Kyiv M1 Reborn.
+  </div>
+
+  <div class="shots" style="margin-top:14px">
+    <figure class="shot">
+      <img src="./assets/egreg.png" alt="Shot 1">
+      <div class="cap">
+        <div>
+          <div class="t">Тунель</div>
+          <div class="s">Mood / Lighting</div>
+        </div>
+      </div>
+    </figure>
+
+    <figure class="shot">
+      <img src="./assets/gegeg.png" alt="Shot 2">
+      <div class="cap">
+        <div>
+          <div class="t">Станція</div>
+          <div class="s">Architecture</div>
+        </div>
+      </div>
+    </figure>
+
+    <figure class="shot">
+      <img src="./assets/image.png" alt="Shot 3">
+      <div class="cap">
+        <div>
+          <div class="t">Інтерʼєр</div>
+          <div class="s">Style</div>
+        </div>
+      </div>
+    </figure>
+  </div>
+</div>
         <a class="card" href="https://www.roblox.com/communities/426028883/Kyiv-M1-Reborn#!/about" target="_blank" rel="noopener">
           <div class="shine"></div>
           <h3>Roblox Group</h3>
@@ -955,7 +994,7 @@ Discord: https://discord.gg/yfpzKqD2`;
       copy(rules);
     });
 
-    // gallery animation (small shuffle effect)
+
     $("#shuffleBtn").addEventListener("click", ()=>{
       const shots = $$("#galleryGrid .shot");
       shots.forEach((el, i)=>{
@@ -993,13 +1032,5 @@ Discord: https://discord.gg/yfpzKqD2`;
     }
     init();
   </script>
-
-  <!--
-    GITHUB PAGES IMPORTANT:
-    1) Створи папку /assets у репозиторії
-    2) Поклади туди 4 фото і назви:
-       shot1.png, shot2.png, shot3.png, shot4.png
-    3) Якщо інші назви — просто зміни src="./assets/..."
-  -->
 </body>
 </html>

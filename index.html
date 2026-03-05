@@ -29,7 +29,7 @@
       --font: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Inter, Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji";
     }
 
-    /* base */
+
     *{box-sizing:border-box}
     html,body{height:100%}
     body{
@@ -47,7 +47,7 @@
     button{font-family:inherit}
     .container{max-width:var(--max); margin:0 auto; padding:0 18px}
 
-    /* topbar */
+
     .topbar{
       position:sticky; top:0; z-index:50;
       backdrop-filter: blur(12px);
@@ -135,11 +135,11 @@
       font-weight:600;
     }
 
-    /* layout */
+
     .page{display:none}
     .page.active{display:block}
 
-    /* hero */
+
     .hero{ padding: 36px 0 10px; }
     .hero-card{
       position:relative;
@@ -315,7 +315,7 @@
     }
     .card:hover .shine{opacity:.55}
 
-    /* dashboard */
+
     .dash{ padding: 22px 0 40px; }
     .panel{
       border-radius: calc(var(--radius) + 8px);
@@ -365,7 +365,7 @@
       background: rgba(255,75,75,.10);
     }
 
-    /* CHAT UI (new) */
+
     .chatWrap{
       margin-top:14px;
       border-radius: calc(var(--radius) + 2px);
@@ -512,7 +512,7 @@
     }
     .chatSend .btn{padding: 12px 14px}
 
-    /* modal auth */
+  
     .backdrop{
       position:fixed; inset:0;
       background: rgba(0,0,0,.62);
@@ -639,7 +639,7 @@
     .toast.show{opacity:1; transform: translateX(-50%) translateY(0)}
     .toast .t-dot{width:9px; height:9px; border-radius:99px; background: var(--red)}
 
-    /* responsive */
+
     @media (max-width: 920px){
       .hero-card{grid-template-columns: 1fr; min-height: unset}
       .hero-right{padding: 18px 0 6px}
@@ -652,7 +652,7 @@
       .chatWrap{grid-template-columns: 1fr}
       .chatSide{border-right:0; border-bottom:1px solid var(--stroke2)}
       .chatMsgs{height: 260px}
-      /* ---------- Mobile UI upgrades ---------- */
+
 .burger{
   display:none;
   width:44px; height:44px;
@@ -673,7 +673,7 @@
 }
 .nav.open + .actions{} /* (нічого, просто щоб не було “дірки” в деяких браузерах) */
 
-/* phone */
+
 @media (max-width: 720px){
   .container{padding:0 14px}
 
@@ -689,7 +689,7 @@
 
   .burger{display:flex}
 
-  /* nav becomes dropdown */
+
   .nav{
     width:100%;
     order: 3;
@@ -709,7 +709,7 @@
     gap:8px;
   }
 
-  /* buttons in header smaller */
+  
   .chip{padding:8px 10px; font-size:12px}
   .btn{padding:9px 12px; font-size:13px}
 
@@ -727,14 +727,14 @@
   .meta-row{gap:8px}
   .pill{padding:9px 10px; font-size:12px}
 
-  /* cards stack */
+
   .grid{gap:12px}
   .card{min-height:unset}
 
-  /* dashboard row -> column already in your CSS for 920px, but tighten */
+
   .panel-body{padding: 12px}
 
-  /* chat: make it usable on phone */
+
   .chatWrap{
     grid-template-columns: 1fr !important;
     min-height: 520px;
@@ -753,11 +753,11 @@
     backdrop-filter: blur(10px);
   }
   .chatSend input{
-    font-size:16px; /* важливо: iOS не зумить */
+    font-size:16px; 
   }
 }
 
-/* very small phones */
+
 @media (max-width: 380px){
   .logo{display:none}
   .actions{width:100%; justify-content:space-between}
@@ -769,7 +769,7 @@
 </head>
 <body>
 
-  <!-- TOPBAR -->
+
   <header class="topbar">
     <div class="container">
       <div class="topbar-inner">
@@ -891,7 +891,7 @@
       </div>
     </section>
 
-    <!-- NEWS -->
+
     <section class="page" id="page-news">
       <div class="section">
         <h2 style="margin:16px 0 6px;font-size:18px">Новини</h2>
@@ -922,7 +922,7 @@
       </div>
     </section>
 
-    <!-- SHOP -->
+  
     <section class="page" id="page-shop">
       <div class="section">
         <h2 style="margin:16px 0 6px;font-size:18px">Магазин</h2>
@@ -953,7 +953,7 @@
       </div>
     </section>
 
-    <!-- ABOUT -->
+    
     <section class="page" id="page-about">
       <div class="section">
         <h2 style="margin:16px 0 6px;font-size:18px">Про гру</h2>
@@ -985,7 +985,7 @@
       </div>
     </section>
 
-    <!-- DASH -->
+    
     <section class="page" id="page-dash">
       <div class="dash">
         <div class="panel">
@@ -1066,7 +1066,7 @@
               <button class="btn secondary" id="dashNewsBtn">Останні новини</button>
             </div>
 
-            <!-- CHAT (NEW) -->
+           
             <div class="chatWrap" style="margin-top:14px">
               <aside class="chatSide">
                 <div class="chatSideTop">
@@ -1114,7 +1114,7 @@
     <div style="height:24px"></div>
   </main>
 
-  <!-- AUTH MODAL -->
+
   <div class="backdrop" id="authBackdrop" aria-hidden="true">
     <div class="modal" role="dialog" aria-modal="true" aria-label="Auth">
       <div class="modal-grid">
@@ -1128,8 +1128,7 @@
           </div>
           <h2>Перед входом — акаунт</h2>
           <p>
-            Це прототип. Дані зберігаються локально (localStorage).
-            Для реального проєкту заміниш на бекенд + базу.
+            
           </p>
 
           <div class="features">
@@ -1148,7 +1147,7 @@
           </div>
 
           <div style="margin-top:14px" class="help">
-            Порада: пароль тут лише “для вигляду”. Не використовуй реальний пароль — це фронт без шифрування.
+
           </div>
         </div>
 
@@ -1203,7 +1202,7 @@
   </div>
 
   <script>
-    // ---------- tiny helpers ----------
+   
     const $ = (q, el=document) => el.querySelector(q);
     const $$ = (q, el=document) => [...el.querySelectorAll(q)];
 
@@ -1222,7 +1221,7 @@
       );
     }
 
-    // ---------- "DB" in localStorage ----------
+
     const LS_USERS = "km1_users_v1";
     const LS_SESSION = "km1_session_v1";
 
@@ -1249,14 +1248,14 @@
     }
 
     function ensureUserDefaults(user){
-      // demo fields
+      
       if (typeof user.coins !== "number") user.coins = 150; // стартові
       if (!user.createdAt) user.createdAt = Date.now();
       if (!user.level) user.level = 1;
       return user;
     }
 
-    // ---------- routing ----------
+
     const routes = ["home","news","shop","about","dash"];
     function showRoute(route){
       routes.forEach(r=>{
@@ -1279,7 +1278,7 @@
       go();
     }
 
-    // ---------- auth modal ----------
+
     const backdrop = $("#authBackdrop");
     const errBox = $("#authError");
 
@@ -1318,7 +1317,7 @@
     backdrop.addEventListener("click", (e)=>{ if(e.target === backdrop) closeAuth(); });
     document.addEventListener("keydown", (e)=>{ if(e.key === "Escape") closeAuth(); });
 
-    // ---------- register ----------
+ 
     $("#registerForm").addEventListener("submit", (e)=>{
       e.preventDefault();
       hideError();
@@ -1346,7 +1345,7 @@
       showRoute("dash");
     });
 
-    // ---------- login ----------
+
     $("#loginForm").addEventListener("submit", (e)=>{
       e.preventDefault();
       hideError();
@@ -1367,7 +1366,7 @@
       showRoute("dash");
     });
 
-    // ---------- UI sync ----------
+ 
     function getCurrentUser(){
       const sess = getSession();
       if (!sess?.nick) return null;
@@ -1538,7 +1537,7 @@
       requireAuthThen(()=>showRoute("dash"));
     });
 
-    // ---------- CHAT (NEW) ----------
+   
     function loadChat(){
       try{ return JSON.parse(localStorage.getItem(LS_CHAT) || "[]"); }
       catch{ return []; }
@@ -1570,14 +1569,14 @@
       const me = getCurrentUser();
       const sim = getSimOn();
 
-      // demo: some users "online"
+
       const onlineSet = new Set();
       if (me) onlineSet.add(me.nick.toLowerCase());
 
       if (sim){
-        // pick up to 4 random others as online
+
         const others = users.filter(u => !me || u.nick.toLowerCase() !== me.nick.toLowerCase());
-        // deterministic-ish: based on day
+
         const seed = new Date().toDateString().length + (users.length*7);
         const pick = [];
         for (let i=0; i<others.length; i++){
@@ -1587,7 +1586,7 @@
         pick.forEach(u=>onlineSet.add(u.nick.toLowerCase()));
       }
 
-      // ensure at least me exists in list even if only one user
+
       const list = users.length ? users : (me ? [me] : []);
 
       const root = $("#userList");
@@ -1673,7 +1672,7 @@
         "Привіт! Хто в онлайні?",
         "Хтось йде в івент сьогодні?",
         "Потрібен хелп по квесту.",
-        "Я купив VIP, працює 🙂",
+        "Я купив VIP, працює ",
         "Оптимізація після апдейту стала краща."
       ];
       const who = others[Math.floor(Math.random()*others.length)];
@@ -1704,7 +1703,7 @@
         inp.value = "";
         pushChatMessage(u.nick, text);
 
-        // demo: sometimes generate other replies if sim on
+    
         if (getSimOn()){
           setTimeout(()=>{
             if (Math.random() < 0.70) botSimulateReply();
@@ -1723,7 +1722,7 @@
       });
     });
 
-    // ---------- init ----------
+
     function init(){
       const h = (location.hash || "#home").replace("#","");
       if (routes.includes(h)) showRoute(h);

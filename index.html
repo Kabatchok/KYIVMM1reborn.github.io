@@ -2,19 +2,17 @@
 <html lang="uk">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Kyiv M1 Reborn — Portal</title>
-  <meta name="description" content="Kyiv M1 Reborn — офіційний портал, новини, магазин, профіль, чат та ком’юніті." />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <title>Kyiv M1 Reborn — Community Portal</title>
+  <meta name="description" content="Kyiv M1 Reborn — комʼюніті портал: галерея, посилання, правила, новини." />
 
   <style>
     :root{
       --bg:#0b0f12;
       --card:#10171c;
-      --card2:#0e1418;
       --text:#e9f0f3;
       --muted:#a8b6be;
 
-      /* RED THEME */
       --red:#ff4b4b;
       --red2:#d81f1f;
       --crimson:#ff6b6b;
@@ -46,21 +44,30 @@
     button{font-family:inherit}
     .container{max-width:var(--max); margin:0 auto; padding:0 18px}
 
+    /* subtle grain */
+    .grain{
+      position:fixed; inset:0; pointer-events:none; z-index:-1; opacity:.08;
+      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='.45'/%3E%3C/svg%3E");
+      mix-blend-mode:overlay;
+    }
+
     /* topbar */
     .topbar{
       position:sticky; top:0; z-index:50;
       backdrop-filter: blur(12px);
-      background: linear-gradient(180deg, rgba(11,15,18,.78), rgba(11,15,18,.42));
+      background: linear-gradient(180deg, rgba(11,15,18,.86), rgba(11,15,18,.46));
       border-bottom: 1px solid var(--stroke2);
     }
     .topbar-inner{
       display:flex; align-items:center; justify-content:space-between;
-      height:72px;
-      gap:14px;
+      min-height:72px;
+      gap:12px;
+      padding: 10px 0;
     }
     .brand{
       display:flex; align-items:center; gap:10px; cursor:pointer;
       user-select:none;
+      min-width: 0;
     }
     .logo{
       width:38px; height:38px; border-radius:12px;
@@ -70,7 +77,7 @@
       box-shadow: 0 14px 30px rgba(216,31,31,.22);
       position:relative;
       overflow:hidden;
-      transform: translateZ(0);
+      flex:0 0 auto;
     }
     .logo:after{
       content:"";
@@ -80,11 +87,39 @@
       opacity:.7;
     }
     @keyframes spin{to{transform:rotate(360deg)}}
-    .brand strong{font-size:14px; letter-spacing:.5px}
+    .brand strong{
+      font-size:14px; letter-spacing:.5px;
+      display:block; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+      max-width: 42vw;
+    }
     .brand span{display:block; font-size:12px; color:var(--muted); margin-top:1px}
 
+    .burger{
+      display:none;
+      width:44px; height:44px;
+      border-radius: 14px;
+      border:1px solid var(--stroke2);
+      background: rgba(255,255,255,.03);
+      cursor:pointer;
+      align-items:center;
+      justify-content:center;
+      gap:5px;
+      flex-direction:column;
+      transition: transform .18s var(--ease), background .18s var(--ease);
+    }
+    .burger:hover{transform: translateY(-1px); background: rgba(255,255,255,.06)}
+    .burger span{
+      width:18px; height:2px;
+      border-radius:999px;
+      background: rgba(255,255,255,.78);
+      transition: transform .18s var(--ease), opacity .18s var(--ease);
+    }
+    .burger.open span:nth-child(1){transform: translateY(6px) rotate(45deg)}
+    .burger.open span:nth-child(2){opacity:0}
+    .burger.open span:nth-child(3){transform: translateY(-6px) rotate(-45deg)}
+
     .nav{
-      display:flex; align-items:center; gap:10px;
+      display:flex; align-items:center; gap:8px;
       padding:8px;
       background: rgba(255,255,255,.03);
       border:1px solid var(--stroke2);
@@ -97,24 +132,12 @@
       color:var(--muted);
       transition: transform .2s var(--ease), background .2s var(--ease), color .2s var(--ease);
       outline:none;
+      white-space:nowrap;
     }
     .nav a:hover{background: rgba(255,75,75,.10); color:var(--text); transform: translateY(-1px)}
     .nav a.active{background: rgba(255,75,75,.16); color:var(--text)}
 
-    .actions{display:flex; align-items:center; gap:10px}
-    .chip{
-      display:flex; align-items:center; gap:8px;
-      padding:10px 12px;
-      border-radius:999px;
-      border:1px solid var(--stroke2);
-      background: rgba(255,255,255,.03);
-      color:var(--muted);
-      font-size:13px;
-      cursor:pointer;
-      transition: transform .18s var(--ease), background .18s var(--ease), border-color .18s var(--ease);
-    }
-    .chip:hover{transform: translateY(-1px); background: rgba(255,255,255,.06); border-color: rgba(255,255,255,.10)}
-
+    .actions{display:flex; align-items:center; gap:10px; flex-wrap:wrap; justify-content:flex-end}
     .btn{
       border:0; cursor:pointer;
       padding:10px 14px;
@@ -125,22 +148,10 @@
       color:#2a0404;
       box-shadow: 0 16px 30px rgba(216,31,31,.18);
       transition: transform .18s var(--ease), filter .18s var(--ease);
-      transform: translateZ(0);
-      position: relative;
-      overflow:hidden;
+      will-change: transform;
     }
-    .btn:before{
-      content:"";
-      position:absolute;
-      inset:-30%;
-      background: radial-gradient(circle at 30% 30%, rgba(255,255,255,.25), transparent 40%);
-      opacity:.0;
-      transition: opacity .18s var(--ease);
-    }
-    .btn:hover{transform: translateY(-1px); filter:saturate(1.05)}
-    .btn:hover:before{opacity:.9}
+    .btn:hover{transform: translateY(-1px); filter:saturate(1.06)}
     .btn:active{transform: translateY(0px) scale(.99)}
-
     .btn.secondary{
       background: rgba(255,255,255,.06);
       color: var(--text);
@@ -149,39 +160,8 @@
       font-weight:700;
     }
 
-    /* burger */
-    .burger{
-      display:none;
-      width:44px; height:44px;
-      border-radius: 14px;
-      border:1px solid var(--stroke2);
-      background: rgba(255,255,255,.03);
-      cursor:pointer;
-      align-items:center;
-      justify-content:center;
-      gap:5px;
-      flex-direction:column;
-    }
-    .burger span{
-      width:18px; height:2px;
-      border-radius:999px;
-      background: rgba(255,255,255,.78);
-      transition: transform .18s var(--ease), opacity .18s var(--ease);
-    }
-
-    /* page transitions */
-    .page{display:none}
-    .page.active{display:block}
-    .fadeIn{
-      animation: fadeIn .28s var(--ease) both;
-    }
-    @keyframes fadeIn{
-      from{opacity:.0; transform: translateY(8px)}
-      to{opacity:1; transform: translateY(0)}
-    }
-
     /* hero */
-    .hero{ padding: 36px 0 10px; }
+    .hero{ padding: 28px 0 10px; }
     .hero-card{
       position:relative;
       border-radius: calc(var(--radius) + 14px);
@@ -192,18 +172,14 @@
         linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
       box-shadow: var(--shadow);
       overflow:hidden;
-      padding: 28px;
+      padding: 22px;
       min-height: 420px;
       display:grid;
       grid-template-columns: 1.1fr .9fr;
       gap: 18px;
       transform: translateZ(0);
     }
-    .hero-left{
-      display:flex; flex-direction:column; justify-content:center;
-      gap: 14px;
-      padding: 6px 4px;
-    }
+
     .kicker{
       display:inline-flex; align-items:center; gap:8px;
       padding:8px 10px;
@@ -216,9 +192,8 @@
       animation: floaty 3.2s var(--ease) infinite;
     }
     @keyframes floaty{ 0%,100%{transform: translateY(0)} 50%{transform: translateY(-3px)} }
-
     h1{
-      margin:0;
+      margin: 10px 0 0;
       font-size: clamp(30px, 4.2vw, 52px);
       line-height:1.05;
       letter-spacing:-.6px;
@@ -226,13 +201,18 @@
     .sub{
       color: var(--muted);
       font-size: 15px;
-      line-height:1.6;
-      max-width: 58ch;
+      line-height:1.65;
+      max-width: 60ch;
+      margin-top: 10px;
     }
-    .hero-cta{display:flex; flex-wrap:wrap; gap:10px; margin-top: 4px}
+    .hero-cta{
+      display:flex; flex-wrap:wrap; gap:10px; margin-top: 14px;
+    }
     .hero-cta .btn{padding:12px 16px}
 
-    .meta-row{ display:flex; flex-wrap:wrap; gap:10px; margin-top: 10px; }
+    .meta-row{
+      display:flex; flex-wrap:wrap; gap:10px; margin-top: 14px;
+    }
     .pill{
       display:flex; align-items:center; gap:8px;
       padding:10px 12px;
@@ -246,8 +226,8 @@
     }
     .pill:hover{transform: translateY(-1px); background: rgba(255,255,255,.05)}
     .dot{width:8px; height:8px; border-radius:99px; background: var(--red)}
-    .dot.orange{background:#ffb347}
     .dot.blue{background:#5dd2ff}
+    .dot.orange{background:#ffb347}
 
     .hero-right{ display:flex; align-items:center; justify-content:center; position:relative; }
     .orb{
@@ -260,11 +240,14 @@
         radial-gradient(260px 260px at 50% 55%, rgba(255,75,75,.18), rgba(216,31,31,.10), rgba(0,0,0,.0));
       box-shadow: 0 40px 90px rgba(216,31,31,.18);
       position:relative;
-      transform: translateZ(0);
       animation: orb 7s var(--ease) infinite;
       cursor:pointer;
+      will-change: transform;
     }
-    @keyframes orb{ 0%,100%{transform: translateY(0) rotate(-2deg)} 50%{transform: translateY(-10px) rotate(2deg)} }
+    @keyframes orb{
+      0%,100%{transform: translateY(0) rotate(-2deg)}
+      50%{transform: translateY(-10px) rotate(2deg)}
+    }
     .orb:before{
       content:"";
       position:absolute; inset:-2px;
@@ -285,7 +268,7 @@
       display:flex; align-items:center; justify-content:center;
       overflow:hidden;
     }
-    .orb-inner .badge{
+    .badge{
       text-align:center;
       padding: 14px 16px;
       border-radius: 18px;
@@ -302,17 +285,24 @@
       width: 14px; height: 14px;
       border-radius: 6px 14px 6px 14px;
       background: rgba(255,75,75,.82);
-      filter: blur(.2px);
       opacity:.55;
       animation: drift 9s var(--ease) infinite;
     }
     .leaf:nth-child(1){left: 8%; top: 18%; animation-delay: -1s}
     .leaf:nth-child(2){left: 24%; top: 76%; width:10px; height:10px; animation-delay: -4s; opacity:.4}
     .leaf:nth-child(3){left: 88%; top: 26%; width:12px; height:12px; animation-delay: -6s}
-    @keyframes drift{ 0%,100%{transform: translate(0,0) rotate(0deg)} 50%{transform: translate(14px,-10px) rotate(14deg)} }
+    @keyframes drift{
+      0%,100%{transform: translate(0,0) rotate(0deg)}
+      50%{transform: translate(14px,-10px) rotate(14deg)}
+    }
 
     /* sections */
     .section{padding: 18px 0 34px}
+    .section h2{margin: 10px 0 6px; font-size:18px}
+    .section .lead{
+      color:var(--muted); font-size:13px; line-height:1.7; max-width: 84ch;
+    }
+
     .grid{
       display:grid;
       grid-template-columns: repeat(12, 1fr);
@@ -331,16 +321,15 @@
       position:relative;
       overflow:hidden;
       min-height: 140px;
-      transform: translateZ(0);
     }
     .card:hover{
-      transform: translateY(-3px) rotateX(1deg);
+      transform: translateY(-3px);
       border-color: rgba(255,75,75,.24);
       background: linear-gradient(180deg, rgba(255,75,75,.10), rgba(255,255,255,.02));
     }
     .card h3{margin: 0 0 8px; font-size: 16px}
     .card p{margin:0; color:var(--muted); font-size: 13px; line-height:1.55}
-    .card .tag{
+    .tag{
       display:inline-flex; align-items:center; gap:8px;
       margin-top: 12px;
       padding: 8px 10px;
@@ -359,294 +348,92 @@
     }
     .card:hover .shine{opacity:.55}
 
-    /* dashboard */
-    .dash{ padding: 22px 0 40px; }
-    .panel{
+    /* gallery */
+    .gallery{
       border-radius: calc(var(--radius) + 8px);
       border:1px solid var(--stroke2);
-      background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+      background: rgba(0,0,0,.18);
+      overflow:hidden;
       box-shadow: var(--shadow);
-      overflow:hidden;
     }
-    .panel-head{
-      display:flex; align-items:center; justify-content:space-between;
-      padding: 16px 16px;
-      border-bottom:1px solid var(--stroke2);
-      background: rgba(0,0,0,.18);
-    }
-    .panel-head strong{font-size:14px}
-    .panel-body{padding: 16px}
-    .row{
-      display:grid;
-      grid-template-columns: 1.2fr .8fr;
-      gap: 14px;
-    }
-    .box{
-      border-radius: var(--radius);
-      border:1px solid var(--stroke2);
-      background: rgba(0,0,0,.18);
-      padding: 14px;
-      min-height: 160px;
-    }
-    .box h4{margin:0 0 8px; font-size:14px}
-    .list{display:flex; flex-direction:column; gap:8px}
-    .item{
+    .gallery-head{
       display:flex; align-items:center; justify-content:space-between; gap:10px;
-      padding: 10px 12px;
-      border-radius: 14px;
-      border:1px solid var(--stroke2);
-      background: rgba(255,255,255,.03);
-      cursor:pointer;
-      transition: transform .16s var(--ease), background .16s var(--ease);
-    }
-    .item:hover{transform: translateY(-1px); background: rgba(255,75,75,.08)}
-    .item small{color:var(--muted)}
-    .kbd{
-      font-size:11px; color: #ffd1d1;
-      padding: 4px 8px;
-      border-radius: 999px;
-      border:1px solid rgba(255,75,75,.22);
-      background: rgba(255,75,75,.10);
-    }
-
-    /* chat */
-    .chatWrap{
-      margin-top:14px;
-      border-radius: calc(var(--radius) + 2px);
-      border:1px solid var(--stroke2);
-      background: rgba(0,0,0,.18);
-      overflow:hidden;
-      display:grid;
-      grid-template-columns: 320px 1fr;
-      min-height: 360px;
-    }
-    .chatSide{
-      border-right:1px solid var(--stroke2);
-      padding: 12px;
-      background: rgba(0,0,0,.12);
-      display:flex;
-      flex-direction:column;
-      gap:10px;
-      min-width:0;
-    }
-    .chatSideTop{
-      display:flex; align-items:center; justify-content:space-between; gap:10px;
-    }
-    .chatTitle{
-      font-weight:900;
-      font-size:13px;
-      letter-spacing:.2px;
-    }
-    .toggle{
-      display:flex; align-items:center; gap:8px;
-      color:var(--muted);
-      font-size:12px;
-      cursor:pointer;
-      user-select:none;
-      padding:8px 10px;
-      border-radius:999px;
-      border:1px solid var(--stroke2);
-      background: rgba(255,255,255,.03);
-      transition: transform .16s var(--ease), background .16s var(--ease);
-    }
-    .toggle:hover{transform: translateY(-1px); background: rgba(255,255,255,.06)}
-    .switch{
-      width:34px; height:18px; border-radius:999px;
-      border:1px solid var(--stroke2);
-      background: rgba(255,255,255,.06);
-      position:relative;
-      flex:0 0 auto;
-    }
-    .switch:after{
-      content:"";
-      position:absolute; top:2px; left:2px;
-      width:14px; height:14px; border-radius:99px;
-      background: rgba(255,255,255,.55);
-      transition: left .18s var(--ease), background .18s var(--ease);
-    }
-    .toggle.on .switch{border-color: rgba(255,75,75,.25); background: rgba(255,75,75,.10)}
-    .toggle.on .switch:after{left:18px; background: rgba(255,75,75,.85)}
-    .userList{
-      display:flex; flex-direction:column; gap:8px;
-      overflow:auto;
-      padding-right:2px;
-    }
-    .uRow{
-      display:flex; align-items:center; justify-content:space-between; gap:10px;
-      padding: 10px 10px;
-      border-radius: 14px;
-      border:1px solid var(--stroke2);
-      background: rgba(255,255,255,.03);
-    }
-    .uLeft{display:flex; align-items:center; gap:10px; min-width:0}
-    .avatar{
-      width:34px; height:34px; border-radius: 12px;
-      border:1px solid rgba(255,255,255,.10);
-      background:
-        radial-gradient(12px 12px at 70% 35%, rgba(255,255,255,.32), transparent 60%),
-        linear-gradient(135deg, rgba(255,75,75,.9), rgba(216,31,31,.9));
-      display:flex; align-items:center; justify-content:center;
-      font-weight:900;
-      color:#210404;
-      box-shadow: 0 12px 26px rgba(216,31,31,.15);
-      flex:0 0 auto;
-      overflow:hidden;
-    }
-    .uName{font-size:13px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
-    .uStatus{
-      display:flex; align-items:center; gap:8px;
-      color:var(--muted);
-      font-size:12px;
-      white-space:nowrap;
-    }
-    .uDot{width:8px; height:8px; border-radius:99px; background: rgba(255,255,255,.18)}
-    .uDot.on{background: var(--red)}
-
-    .chatMain{
-      display:flex;
-      flex-direction:column;
-      min-width: 0;
-    }
-    .chatHead{
-      display:flex; align-items:center; justify-content:space-between; gap:10px;
-      padding: 12px 12px;
+      padding: 14px 14px;
       border-bottom:1px solid var(--stroke2);
       background: rgba(0,0,0,.10);
     }
-    .chatHead small{color:var(--muted)}
-    .chatMsgs{
+    .gallery-head b{font-size:13px}
+    .gallery-head small{color:var(--muted)}
+    .gallery-grid{
+      display:grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 10px;
       padding: 12px;
-      display:flex;
-      flex-direction:column;
-      gap:10px;
-      overflow:auto;
-      height: 240px;
     }
-    .msg{
-      display:flex; gap:10px; align-items:flex-end;
-      max-width: 86%;
-    }
-    .msg.me{margin-left:auto; flex-direction:row-reverse}
-    .bubble{
-      border-radius: 16px;
+    .shot{
+      grid-column: span 6;
+      border-radius: 18px;
       border:1px solid var(--stroke2);
       background: rgba(255,255,255,.03);
-      padding: 10px 10px;
-      line-height:1.35;
+      overflow:hidden;
+      position:relative;
+      transform: translateZ(0);
+    }
+    .shot img{
+      width:100%; height: 240px;
+      object-fit: cover;
+      display:block;
+      transform: scale(1.02);
+      transition: transform .35s var(--ease), filter .35s var(--ease);
+      filter: saturate(1.02) contrast(1.02);
+    }
+    .shot:hover img{transform: scale(1.07)}
+    .shot:after{
+      content:"";
+      position:absolute; inset:0;
+      background: linear-gradient(180deg, transparent 55%, rgba(0,0,0,.55));
+      pointer-events:none;
+    }
+    .shot .cap{
+      position:absolute; left:12px; bottom:10px; right:12px;
+      display:flex; align-items:flex-end; justify-content:space-between; gap:10px;
+    }
+    .cap .t{
+      font-weight:900; font-size:13px;
+      text-shadow: 0 14px 40px rgba(0,0,0,.6);
+    }
+    .cap .s{
+      color: rgba(233,240,243,.82);
+      font-size:12px;
+      text-shadow: 0 14px 40px rgba(0,0,0,.6);
+    }
+
+    /* rules */
+    .rules{
+      border-radius: calc(var(--radius) + 8px);
+      border:1px solid var(--stroke2);
+      background: rgba(0,0,0,.18);
+      padding: 14px;
+      box-shadow: var(--shadow);
+    }
+    .rules ul{
+      margin: 10px 0 0;
+      padding-left: 18px;
+      color: var(--muted);
+      line-height: 1.8;
       font-size: 13px;
     }
-    .msg.me .bubble{
-      background: rgba(255,75,75,.10);
-      border-color: rgba(255,75,75,.18);
-    }
-    .meta{
-      font-size:11px;
-      color: var(--muted);
-      margin-top: 4px;
-    }
-    .chatSend{
-      padding: 12px;
-      border-top:1px solid var(--stroke2);
-      display:flex;
-      gap:10px;
-      align-items:center;
-      background: rgba(0,0,0,.08);
-    }
-    .chatSend input{
-      flex:1;
-      min-width: 0;
-      padding: 12px 12px;
-      border-radius: 14px;
-      border:1px solid var(--stroke2);
-      background: rgba(0,0,0,.18);
-      color: var(--text);
-      outline:none;
-    }
-    .chatSend input:focus{border-color: rgba(255,75,75,.28)}
-    .chatSend .btn{padding: 12px 14px}
-
-    /* modal auth */
-    .backdrop{
-      position:fixed; inset:0;
-      background: rgba(0,0,0,.62);
-      display:none;
-      align-items:center; justify-content:center;
-      padding: 18px;
-      z-index: 100;
-    }
-    .backdrop.show{display:flex}
-    .modal{
-      width: min(920px, 100%);
-      border-radius: calc(var(--radius) + 12px);
-      border:1px solid var(--stroke2);
-      background:
-        radial-gradient(900px 420px at 90% 25%, rgba(255,75,75,.18), transparent 60%),
-        linear-gradient(180deg, rgba(16,23,28,.92), rgba(12,17,20,.92));
-      box-shadow: 0 40px 120px rgba(0,0,0,.7);
-      overflow:hidden;
-      transform: translateY(10px) scale(.98);
-      opacity:0;
-      transition: transform .22s var(--ease), opacity .22s var(--ease);
-    }
-    .backdrop.show .modal{transform: translateY(0) scale(1); opacity:1}
-    .modal-grid{
-      display:grid;
-      grid-template-columns: 1fr 1fr;
-      min-height: 420px;
-    }
-    .modal-left{
-      padding: 18px;
-      border-right:1px solid var(--stroke2);
-      background: rgba(0,0,0,.18);
-    }
-    .modal-right{padding: 18px}
-    .modal-left h2{margin:6px 0 10px; font-size:18px}
-    .modal-left p{margin:0; color:var(--muted); font-size:13px; line-height:1.6}
-
-    .tabs{display:flex; gap:8px; margin-bottom: 12px}
-    .tab{
-      flex:1;
-      padding:10px 12px;
-      border-radius: 999px;
-      border:1px solid var(--stroke2);
-      background: rgba(255,255,255,.03);
-      color: var(--muted);
-      cursor:pointer;
-      font-weight:800;
-      transition: background .16s var(--ease), color .16s var(--ease), transform .16s var(--ease);
-    }
-    .tab:hover{transform: translateY(-1px)}
-    .tab.active{
-      background: rgba(255,75,75,.14);
-      color: var(--text);
-      border-color: rgba(255,75,75,.22);
-    }
-
-    .form{display:flex; flex-direction:column; gap:10px}
-    .field{ display:flex; flex-direction:column; gap:6px; }
-    label{font-size:12px; color: var(--muted)}
-    input{
-      padding: 12px 12px;
-      border-radius: 14px;
-      border:1px solid var(--stroke2);
-      background: rgba(0,0,0,.18);
-      color: var(--text);
-      outline:none;
-      transition: border-color .16s var(--ease), transform .16s var(--ease);
-    }
-    input:focus{border-color: rgba(255,75,75,.28)}
-    .help{ font-size:12px; color: var(--muted); line-height:1.5; }
-    .rowbtn{display:flex; gap:10px; align-items:center; justify-content:space-between; flex-wrap:wrap}
-    .danger{
-      color:#ffb3b3;
-      font-size:12px;
-      display:none;
-      border:1px solid rgba(255,120,120,.22);
-      background: rgba(255,120,120,.08);
+    .rules li b{color: var(--text)}
+    .rules .note{
+      margin-top: 10px;
+      border:1px solid rgba(255,75,75,.18);
+      background: rgba(255,75,75,.08);
+      color: rgba(233,240,243,.86);
+      border-radius: 16px;
       padding: 10px 12px;
-      border-radius: 14px;
+      font-size: 12px;
+      line-height: 1.55;
     }
-    .danger.show{display:block}
 
     /* toast */
     .toast{
@@ -671,6 +458,20 @@
     .toast.show{opacity:1; transform: translateX(-50%) translateY(0)}
     .toast .t-dot{width:9px; height:9px; border-radius:99px; background: var(--red)}
 
+    /* reveal animations */
+    .reveal{opacity:0; transform: translateY(14px); transition: opacity .55s var(--ease), transform .55s var(--ease)}
+    .reveal.on{opacity:1; transform: translateY(0)}
+
+    /* footer */
+    footer{
+      padding: 28px 0 40px;
+      color: var(--muted);
+      font-size: 12px;
+      border-top: 1px solid var(--stroke2);
+      background: rgba(0,0,0,.10);
+      margin-top: 16px;
+    }
+
     /* responsive */
     @media (max-width: 920px){
       .hero-card{grid-template-columns: 1fr; min-height: unset}
@@ -678,26 +479,20 @@
       .orb{width: 280px; height: 280px}
       .grid{grid-template-columns: repeat(6, 1fr)}
       .card{grid-column: span 6}
-      .row{grid-template-columns: 1fr}
-      .modal-grid{grid-template-columns: 1fr}
-      .modal-left{border-right:0; border-bottom:1px solid var(--stroke2)}
-      .chatWrap{grid-template-columns: 1fr}
-      .chatSide{border-right:0; border-bottom:1px solid var(--stroke2)}
-      .chatMsgs{height: 260px}
+      .shot{grid-column: span 12}
+      .shot img{height: 240px}
     }
 
     @media (max-width: 720px){
       .container{padding:0 14px}
+
+      .burger{display:flex}
+
       .topbar-inner{
-        height:auto;
-        padding: 10px 0;
+        align-items:flex-start;
         gap:10px;
         flex-wrap:wrap;
       }
-      .brand strong{font-size:13px}
-      .brand span{font-size:11px}
-
-      .burger{display:flex}
 
       .nav{
         width:100%;
@@ -717,67 +512,64 @@
         margin-left:auto;
         gap:8px;
       }
-      .chip{padding:8px 10px; font-size:12px}
-      .btn{padding:9px 12px; font-size:13px}
+
+      .btn{padding:10px 12px; font-size:13px}
+      .btn.secondary{padding:10px 12px}
 
       .hero{padding: 18px 0 8px}
-      .hero-card{padding: 16px; gap: 12px; border-radius: calc(var(--radius) + 8px)}
-      h1{letter-spacing:-.4px}
-      .sub{font-size:14px; line-height:1.55}
-
-      /* chat: sticky send + no iOS zoom */
-      .chatSend{
-        position: sticky;
-        bottom: 0;
-        background: rgba(0,0,0,.22);
-        backdrop-filter: blur(10px);
+      .hero-card{
+        padding: 16px;
+        gap: 12px;
+        border-radius: calc(var(--radius) + 8px);
       }
-      .chatSend input{font-size:16px}
+      .sub{font-size:14px}
+      .pill{padding:9px 10px; font-size:12px}
+      .shot img{height: 220px}
     }
 
     @media (max-width: 380px){
       .logo{display:none}
       .actions{width:100%; justify-content:space-between}
-      .chip{flex:1}
+      .btn{flex:1}
       .btn.secondary{flex:1}
+    }
+
+    @media (prefers-reduced-motion: reduce){
+      *{animation:none !important; transition:none !important}
     }
   </style>
 </head>
 
 <body>
+  <div class="grain" aria-hidden="true"></div>
+
   <!-- TOPBAR -->
   <header class="topbar">
     <div class="container">
       <div class="topbar-inner">
         <div class="brand" id="goHome" tabindex="0" title="На головну">
           <div class="logo" aria-hidden="true"></div>
-          <div>
+          <div style="min-width:0">
             <strong>Kyiv M1 Reborn</strong>
-            <span>Roblox Community</span>
+            <span>Community Portal</span>
           </div>
         </div>
 
-        <button class="burger" id="burgerBtn" aria-label="Меню" aria-expanded="false" type="button">
+        <button class="burger" id="burger" aria-label="Меню" aria-expanded="false">
           <span></span><span></span><span></span>
         </button>
 
-        <nav class="nav" aria-label="Навігація">
-          <a href="#home" data-route="home" class="active">Головна</a>
-          <a href="#news" data-route="news">Новини</a>
-          <a href="#shop" data-route="shop">Магазин</a>
-          <a href="#about" data-route="about">Про нас</a>
+        <nav class="nav" id="nav" aria-label="Навігація">
+          <a href="#home" class="active" data-link>Головна</a>
+          <a href="#gallery" data-link>Галерея</a>
+          <a href="#community" data-link>Комʼюніті</a>
+          <a href="#rules" data-link>Правила</a>
+          <a href="#about" data-link>Про нас</a>
         </nav>
 
         <div class="actions">
-          <div class="chip" id="communityChip" title="Перейти в Roblox ком’юніті">
-            <span style="display:inline-flex;align-items:center;gap:8px">
-              <span class="dot"></span>
-              <span>Community</span>
-            </span>
-          </div>
-
-          <button class="btn secondary" id="profileBtn">Профіль</button>
-          <button class="btn" id="communityBtn">Перейти в ком’юніті</button>
+          <a class="btn secondary" href="https://discord.gg/yfpzKqD2" target="_blank" rel="noopener">Discord</a>
+          <a class="btn" href="https://www.roblox.com/communities/426028883/Kyiv-M1-Reborn#!/about" target="_blank" rel="noopener">Перейти до комʼюніті</a>
         </div>
       </div>
     </div>
@@ -789,387 +581,265 @@
     <span id="toastText">OK</span>
   </div>
 
-  <!-- PAGES -->
   <main class="container">
 
     <!-- HOME -->
-    <section class="page active" id="page-home">
-      <div class="hero">
-        <div class="hero-card" id="heroCard">
-          <div class="leaf"></div><div class="leaf"></div><div class="leaf"></div>
+    <section id="home" class="hero reveal">
+      <div class="hero-card" id="heroCard">
+        <div class="leaf"></div><div class="leaf"></div><div class="leaf"></div>
 
-          <div class="hero-left">
-            <div class="kicker" id="kicker">
-              <span class="dot blue"></span>
-              <span>Updates • Events • Community</span>
-            </div>
-
-            <h1 id="heroTitle">Ласкаво просимо в <span style="color:var(--crimson)">Kyiv M1 Reborn</span></h1>
-            <div class="sub">
-              Офіційний портал ком’юніті Roblox: новини, магазин, профіль та чат.
-              Для чату потрібен акаунт (демо зберігається локально).
-            </div>
-
-            <div class="hero-cta">
-              <button class="btn" id="joinBtn">Створити акаунт</button>
-              <button class="btn secondary" id="howBtn">Як почати</button>
-              <a class="btn secondary" id="aboutCommunityBtn" href="#" style="display:inline-flex;align-items:center;justify-content:center">Про ком’юніті</a>
-            </div>
-
-            <div class="meta-row">
-              <div class="pill" id="pill1"><span class="dot"></span> Оновлення та анонси</div>
-              <div class="pill" id="pill2"><span class="dot orange"></span> Івенти та ролі</div>
-              <div class="pill" id="pill3"><span class="dot blue"></span> Чат + профіль</div>
-            </div>
+        <div class="hero-left">
+          <div class="kicker">
+            <span class="dot blue"></span>
+            <span>Roblox community • Updates • Media</span>
           </div>
 
-          <div class="hero-right">
-            <div class="orb" id="orb" title="Клік — анімація">
-              <div class="orb-inner">
-                <div class="badge">
-                  <strong>Join Community</strong>
-                  <span>Roblox • Updates • Chat</span>
-                </div>
+          <h1>
+            Ласкаво просимо в <span style="color:var(--crimson)">Kyiv M1 Reborn</span>
+          </h1>
+
+          <div class="sub">
+            Це не “портал гри” і не магазин. Це акуратна сторінка комʼюніті:
+            посилання, галерея, правила, короткі апдейти і швидкий вхід у Roblox та Discord.
+          </div>
+
+          <div class="hero-cta">
+            <a class="btn" href="https://www.roblox.com/communities/426028883/Kyiv-M1-Reborn#!/about" target="_blank" rel="noopener">
+              Відкрити Roblox-комʼюніті
+            </a>
+            <a class="btn secondary" href="https://discord.gg/yfpzKqD2" target="_blank" rel="noopener">
+              Увійти в Discord
+            </a>
+            <button class="btn secondary" id="copyLinksBtn">Скопіювати посилання</button>
+          </div>
+
+          <div class="meta-row">
+            <div class="pill" data-toast="Фото/відео з проєкту"> <span class="dot"></span> Галерея</div>
+            <div class="pill" data-toast="Швидкий контакт з модерами"> <span class="dot orange"></span> Підтримка</div>
+            <div class="pill" data-toast="Правила комʼюніті — коротко й ясно"> <span class="dot blue"></span> Правила</div>
+          </div>
+        </div>
+
+        <div class="hero-right">
+          <div class="orb" id="orb" title="Клік — ефект" aria-label="Orb">
+            <div class="orb-inner">
+              <div class="badge">
+                <strong>Kyiv M1 Reborn</strong>
+                <span>Join • Share • Build</span>
               </div>
             </div>
           </div>
-
         </div>
+
+      </div>
+    </section>
+
+    <!-- QUICK -->
+    <section class="section reveal">
+      <h2>Швидкі дії</h2>
+      <div class="lead">
+        Натискай — усе має працювати. Ніяких акаунтів і “покупок”.
       </div>
 
-      <div class="section">
-        <div style="display:flex;align-items:end;justify-content:space-between;gap:12px;flex-wrap:wrap">
+      <div class="grid">
+        <a class="card" href="https://www.roblox.com/communities/426028883/Kyiv-M1-Reborn#!/about" target="_blank" rel="noopener">
+          <div class="shine"></div>
+          <h3>Roblox комʼюніті</h3>
+          <p>Основна сторінка групи: опис, учасники, анонси.</p>
+          <div class="tag"><span class="dot"></span> Open</div>
+        </a>
+
+        <a class="card" href="https://discord.gg/yfpzKqD2" target="_blank" rel="noopener">
+          <div class="shine"></div>
+          <h3>Discord</h3>
+          <p>Новини, спілкування, підтримка, заявки.</p>
+          <div class="tag"><span class="dot blue"></span> Join</div>
+        </a>
+
+        <div class="card" id="scrollRules">
+          <div class="shine"></div>
+          <h3>Правила</h3>
+          <p>Коротко: токсик, спам, обхід банів — ні.</p>
+          <div class="tag"><span class="dot orange"></span> Перейти</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- GALLERY -->
+    <section id="gallery" class="section reveal">
+      <h2>Галерея</h2>
+      <div class="lead">
+        Ти дав 4 фото — я вставив їх сюди.
+        <br>
+        <b>Важливо для GitHub Pages:</b> поклади файли в репо, наприклад <code>/assets/</code>, і назви як нижче (або зміни <code>src</code>).
+      </div>
+
+      <div class="gallery" style="margin-top:12px">
+        <div class="gallery-head">
           <div>
-            <div style="color:var(--muted);font-size:12px">Все клікабельне. На телефоні є бургер-меню.</div>
-            <h2 style="margin:6px 0 0;font-size:18px">Швидкі розділи</h2>
+            <b>Скріншоти / атмосфера</b><br>
+            <small>Hover → зум. Tap на телефоні теж ок.</small>
           </div>
-          <button class="btn secondary" id="testClicksBtn">Тест анімацій</button>
+          <button class="btn secondary" id="shuffleBtn">Анімація</button>
         </div>
 
-        <div class="grid">
-          <div class="card" data-action="route" data-route="news">
-            <div class="shine"></div>
-            <h3>Новини та оновлення</h3>
-            <p>Пости, патчноути, важливі анонси.</p>
-            <div class="tag"><span class="dot blue"></span> Відкрити</div>
-          </div>
+        <div class="gallery-grid" id="galleryGrid">
+          <!-- В GitHub: створити /assets і покласти туди картинки -->
+          <figure class="shot">
+            <img src="./assets/shot1.png" alt="Shot 1">
+            <div class="cap">
+              <div>
+                <div class="t">Тунель</div>
+                <div class="s">Mood / Lighting</div>
+              </div>
+            </div>
+          </figure>
 
-          <div class="card" data-action="route" data-route="shop">
-            <div class="shine"></div>
-            <h3>Магазин</h3>
-            <p>VIP, бустери, косметика (демо-логіка).</p>
-            <div class="tag"><span class="dot"></span> Відкрити</div>
-          </div>
+          <figure class="shot">
+            <img src="./assets/shot2.png" alt="Shot 2">
+            <div class="cap">
+              <div>
+                <div class="t">Станція</div>
+                <div class="s">Architecture</div>
+              </div>
+            </div>
+          </figure>
 
-          <div class="card" data-action="profile">
-            <div class="shine"></div>
-            <h3>Профіль + чат</h3>
-            <p>Панель гравця, баланс, демо-чат з аватарами.</p>
-            <div class="tag"><span class="dot orange"></span> Відкрити</div>
-          </div>
+          <figure class="shot">
+            <img src="./assets/shot3.png" alt="Shot 3">
+            <div class="cap">
+              <div>
+                <div class="t">Поїзд</div>
+                <div class="s">Detail</div>
+              </div>
+            </div>
+          </figure>
+
+          <figure class="shot">
+            <img src="./assets/shot4.png" alt="Shot 4">
+            <div class="cap">
+              <div>
+                <div class="t">Інтерʼєр</div>
+                <div class="s">Style</div>
+              </div>
+            </div>
+          </figure>
+        </div>
+      </div>
+
+      <div style="margin-top:10px;color:var(--muted);font-size:12px;line-height:1.6">
+        Якщо хочеш — додам “карусель” замість сітки. Але сітка краще для мобіли і швидше вантажиться.
+      </div>
+    </section>
+
+    <!-- COMMUNITY -->
+    <section id="community" class="section reveal">
+      <h2>Комʼюніті</h2>
+      <div class="lead">
+        Тут зібрані всі точки входу. Можеш додати ще YouTube/TikTok/Instagram — скажеш, що саме.
+      </div>
+
+      <div class="grid" style="margin-top:14px">
+        <a class="card" href="https://www.roblox.com/communities/426028883/Kyiv-M1-Reborn#!/about" target="_blank" rel="noopener">
+          <div class="shine"></div>
+          <h3>Roblox Group</h3>
+          <p>Головне посилання на групу.</p>
+          <div class="tag"><span class="dot"></span> Open</div>
+        </a>
+
+        <a class="card" href="https://discord.gg/yfpzKqD2" target="_blank" rel="noopener">
+          <div class="shine"></div>
+          <h3>Discord Invite</h3>
+          <p>Запрошення в Discord-сервер.</p>
+          <div class="tag"><span class="dot blue"></span> Join</div>
+        </a>
+
+        <div class="card" id="copyDiscordCard">
+          <div class="shine"></div>
+          <h3>Скопіювати Discord</h3>
+          <p>Зручно кинути другу в месенджер.</p>
+          <div class="tag"><span class="dot orange"></span> Copy</div>
         </div>
       </div>
     </section>
 
-    <!-- NEWS -->
-    <section class="page" id="page-news">
-      <div class="section">
-        <h2 style="margin:16px 0 6px;font-size:18px">Новини</h2>
-        <div style="color:var(--muted);font-size:13px;line-height:1.6">
-          Тут буде твій контент (пости/анонси/івенти). Поки — демо.
-        </div>
-
-        <div class="grid" style="margin-top:14px">
-          <div class="card" data-action="toast" data-text="Новина #1 (демо)">
-            <div class="shine"></div>
-            <h3>Update — зміни в ком’юніті</h3>
-            <p>Додано нові ролі, правила та івенти.</p>
-            <div class="tag"><span class="dot"></span> Читати</div>
-          </div>
-          <div class="card" data-action="toast" data-text="Івент #2 (демо)">
-            <div class="shine"></div>
-            <h3>Event Weekend</h3>
-            <p>Активності + бонуси для учасників.</p>
-            <div class="tag"><span class="dot orange"></span> Читати</div>
-          </div>
-          <div class="card" data-action="toast" data-text="Правила (демо)">
-            <div class="shine"></div>
-            <h3>Правила та модерація</h3>
-            <p>Оновлення правил поведінки та санкцій.</p>
-            <div class="tag"><span class="dot blue"></span> Відкрити</div>
-          </div>
-        </div>
+    <!-- RULES -->
+    <section id="rules" class="section reveal">
+      <h2>Правила</h2>
+      <div class="lead">
+        Мінімальні правила комʼюніті (можеш змінити текст як хочеш).
       </div>
-    </section>
 
-    <!-- SHOP -->
-    <section class="page" id="page-shop">
-      <div class="section">
-        <h2 style="margin:16px 0 6px;font-size:18px">Магазин</h2>
-        <div style="color:var(--muted);font-size:13px;line-height:1.6">
-          Демо-магазин: покупки змінюють баланс у localStorage.
+      <div class="rules" style="margin-top:12px">
+        <ul>
+          <li><b>Без токсичності:</b> образи, цькування, дискримінація — бан.</li>
+          <li><b>Без спаму:</b> флуд, реклама, самопіар без дозволу — видалення/мут.</li>
+          <li><b>Без обману:</b> шахрайство, фейкові “роздачі”, скам-лінки — бан.</li>
+          <li><b>Поважай модерацію:</b> апеляції — в адекватній формі, без “наїздів”.</li>
+          <li><b>Без NSFW:</b> контент 18+ не постимо.</li>
+          <li><b>Без обходу покарань:</b> твіни/обхід бану — перманент.</li>
+        </ul>
+
+        <div class="note">
+          Порада: винеси детальні правила в Discord (канал #rules), а тут залиш короткий “конспект”.
         </div>
 
-        <div class="grid" style="margin-top:14px">
-          <div class="card" data-action="buy" data-item="VIP 7 days" data-cost="120">
-            <div class="shine"></div>
-            <h3>VIP 7 days</h3>
-            <p>Тег у чаті, бонуси, підтримка ком’юніті (демо).</p>
-            <div class="tag"><span class="dot"></span> 120 coins</div>
-          </div>
-          <div class="card" data-action="buy" data-item="Skin Pack" data-cost="80">
-            <div class="shine"></div>
-            <h3>Skin Pack</h3>
-            <p>Косметичний набір (демо).</p>
-            <div class="tag"><span class="dot orange"></span> 80 coins</div>
-          </div>
-          <div class="card" data-action="buy" data-item="Booster x2 (24h)" data-cost="60">
-            <div class="shine"></div>
-            <h3>Booster x2 (24h)</h3>
-            <p>Подвоєння нагород на 24 години (демо).</p>
-            <div class="tag"><span class="dot blue"></span> 60 coins</div>
-          </div>
+        <div style="margin-top:12px; display:flex; gap:10px; flex-wrap:wrap">
+          <a class="btn" href="https://discord.gg/yfpzKqD2" target="_blank" rel="noopener">Перейти в Discord</a>
+          <button class="btn secondary" id="copyRulesBtn">Скопіювати правила</button>
         </div>
       </div>
     </section>
 
     <!-- ABOUT -->
-    <section class="page" id="page-about">
-      <div class="section">
-        <h2 style="margin:16px 0 6px;font-size:18px">Про нас</h2>
-        <div style="color:var(--muted);font-size:13px;line-height:1.7;max-width:80ch">
-          Kyiv M1 Reborn — Roblox ком’юніті. Тут ти знайдеш анонси, івенти, магазин та панель профілю.
-          Кнопка <b>“Перейти в ком’юніті”</b> веде на офіційну сторінку Roblox.
+    <section id="about" class="section reveal">
+      <h2>Про нас</h2>
+      <div class="lead">
+        Kyiv M1 Reborn — комʼюніті-проєкт у Roblox. Ця сторінка — легкий портал на GitHub Pages:
+        швидко, чисто, без зайвого.
+      </div>
+
+      <div class="grid" style="margin-top:14px">
+        <div class="card" data-toast="Підкажи: що додати? YouTube / TikTok / FAQ / News?">
+          <div class="shine"></div>
+          <h3>Що далі</h3>
+          <p>Можу додати блок “Новини”, “FAQ”, “Команда”, “Таймлайн”, “Roadmap”.</p>
+          <div class="tag"><span class="dot"></span> Idea</div>
         </div>
 
-        <div class="grid" style="margin-top:14px">
-          <div class="card" data-action="community">
-            <div class="shine"></div>
-            <h3>Roblox Community</h3>
-            <p>Офіційна сторінка ком’юніті.</p>
-            <div class="tag"><span class="dot"></span> Перейти</div>
-          </div>
-          <div class="card" data-action="toast" data-text="Тут можна додати Discord/YouTube (пізніше)">
-            <div class="shine"></div>
-            <h3>Social links</h3>
-            <p>Discord / YouTube / TikTok — додаси коли буде потрібно.</p>
-            <div class="tag"><span class="dot blue"></span> Демо</div>
-          </div>
-          <div class="card" data-action="toast" data-text="Правила (демо)">
-            <div class="shine"></div>
-            <h3>Правила</h3>
-            <p>Шаблон для правил та модерації.</p>
-            <div class="tag"><span class="dot orange"></span> Відкрити</div>
-          </div>
+        <div class="card" data-toast="Лінки вже вшиті в кнопки зверху">
+          <div class="shine"></div>
+          <h3>Посилання</h3>
+          <p>Roblox комʼюніті + Discord. Натискай зверху.</p>
+          <div class="tag"><span class="dot blue"></span> Ready</div>
+        </div>
+
+        <div class="card" data-toast="Сітка + lazy loading = швидко на телефоні">
+          <div class="shine"></div>
+          <h3>Оптимізація</h3>
+          <p>Меню-бургер, адаптив, легкі анімації, без важких бібліотек.</p>
+          <div class="tag"><span class="dot orange"></span> Mobile</div>
         </div>
       </div>
     </section>
 
-    <!-- DASH -->
-    <section class="page" id="page-dash">
-      <div class="dash">
-        <div class="panel">
-          <div class="panel-head">
-            <div>
-              <strong id="dashTitle">Панель користувача</strong>
-              <div style="color:var(--muted);font-size:12px;margin-top:3px" id="dashSubtitle">—</div>
-            </div>
-            <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
-              <div class="chip" id="coinsChip" title="Клік — додати демо монети">
-                <span class="dot"></span>
-                <span id="coinsText">Coins: 0</span>
-              </div>
-              <button class="btn secondary" id="logoutBtn">Вийти</button>
-            </div>
-          </div>
-
-          <div class="panel-body">
-            <div class="row">
-              <div class="box">
-                <h4>Активність</h4>
-                <div class="list">
-                  <div class="item" data-action="toast" data-text="Ви отримали daily reward (демо)">
-                    <div>
-                      <div>Daily Reward</div>
-                      <small>Клікни — отримати бонус</small>
-                    </div>
-                    <span class="kbd">GET</span>
-                  </div>
-                  <div class="item" data-action="toast" data-text="Нагадування додано (демо)">
-                    <div>
-                      <div>Event Reminder</div>
-                      <small>Не пропусти івенти</small>
-                    </div>
-                    <span class="kbd">ADD</span>
-                  </div>
-                  <div class="item" data-action="community">
-                    <div>
-                      <div>Перейти в ком’юніті</div>
-                      <small>Roblox сторінка</small>
-                    </div>
-                    <span class="kbd">GO</span>
-                  </div>
-                </div>
-              </div>
-
-              <div class="box">
-                <h4>Профіль</h4>
-                <div class="list">
-                  <div class="item" id="copyNick">
-                    <div>
-                      <div>Nickname</div>
-                      <small id="nickLine">—</small>
-                    </div>
-                    <span class="kbd">COPY</span>
-                  </div>
-                  <div class="item" data-action="toast" data-text="Налаштування збережено (демо)">
-                    <div>
-                      <div>Settings</div>
-                      <small>UI / звук / повідомлення</small>
-                    </div>
-                    <span class="kbd">SAVE</span>
-                  </div>
-                  <div class="item" data-action="toast" data-text="Тікет створено (демо)">
-                    <div>
-                      <div>Support</div>
-                      <small>Звернення до модерації</small>
-                    </div>
-                    <span class="kbd">NEW</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div style="margin-top:14px; display:flex; gap:10px; flex-wrap:wrap">
-              <button class="btn" id="dashCommunityBtn">Перейти в ком’юніті</button>
-              <button class="btn secondary" id="dashShopBtn">Відкрити магазин</button>
-              <button class="btn secondary" id="dashNewsBtn">Останні новини</button>
-            </div>
-
-            <!-- CHAT -->
-            <div class="chatWrap" style="margin-top:14px">
-              <aside class="chatSide">
-                <div class="chatSideTop">
-                  <div>
-                    <div class="chatTitle">Чат</div>
-                    <div style="color:var(--muted);font-size:12px;margin-top:2px">Демо (localStorage)</div>
-                  </div>
-
-                  <div class="toggle" id="simToggle" title="Демо: симуляція інших онлайн користувачів">
-                    <div class="switch" aria-hidden="true"></div>
-                    <span>Sim</span>
-                  </div>
-                </div>
-
-                <div style="color:var(--muted);font-size:12px;line-height:1.5">
-                  Для справжнього чату між усіма потрібен бекенд (Firebase/WebSocket).
-                </div>
-
-                <div class="userList" id="userList"></div>
-              </aside>
-
-              <section class="chatMain">
-                <div class="chatHead">
-                  <div>
-                    <strong style="font-size:13px">Global chat</strong>
-                    <div><small id="chatHint">—</small></div>
-                  </div>
-                  <button class="btn secondary" id="clearChatBtn" title="Очистити чат (локально)">Очистити</button>
-                </div>
-
-                <div class="chatMsgs" id="chatMsgs" aria-live="polite"></div>
-
-                <form class="chatSend" id="chatForm">
-                  <input id="chatInput" placeholder="Напиши повідомлення…" maxlength="240" />
-                  <button class="btn" type="submit">Send</button>
-                </form>
-              </section>
-            </div>
-
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <div style="height:24px"></div>
+    <div style="height:14px"></div>
   </main>
 
-  <!-- AUTH MODAL -->
-  <div class="backdrop" id="authBackdrop" aria-hidden="true">
-    <div class="modal" role="dialog" aria-modal="true" aria-label="Auth">
-      <div class="modal-grid">
-        <div class="modal-left">
-          <div class="brand" style="gap:10px; margin-bottom:10px" tabindex="0">
-            <div class="logo" aria-hidden="true"></div>
-            <div>
-              <strong>Kyiv M1 Reborn</strong>
-              <span>Account required</span>
-            </div>
-          </div>
-          <h2>Перед входом — акаунт</h2>
-          <p>
-            Це прототип. Дані зберігаються локально (localStorage).
-          </p>
-          <div style="margin-top:14px" class="help">
-            Не використовуй реальні паролі — це демо.
-          </div>
-        </div>
-
-        <div class="modal-right">
-          <div class="tabs">
-            <button class="tab active" id="tabLogin">Вхід</button>
-            <button class="tab" id="tabRegister">Реєстрація</button>
-          </div>
-
-          <div class="danger" id="authError"></div>
-
-          <form class="form" id="loginForm">
-            <div class="field">
-              <label>Nickname</label>
-              <input id="loginNick" autocomplete="username" placeholder="Напр. M1_Player" />
-            </div>
-            <div class="field">
-              <label>Password</label>
-              <input id="loginPass" type="password" autocomplete="current-password" placeholder="Будь-який (демо)" />
-            </div>
-            <div class="rowbtn">
-              <button class="btn" type="submit">Увійти</button>
-              <button class="btn secondary" type="button" id="closeAuth">Закрити</button>
-            </div>
-          </form>
-
-          <form class="form" id="registerForm" style="display:none">
-            <div class="field">
-              <label>Nickname</label>
-              <input id="regNick" autocomplete="username" placeholder="Унікальний нік" />
-            </div>
-            <div class="field">
-              <label>Password</label>
-              <input id="regPass" type="password" autocomplete="new-password" placeholder="Будь-який (демо)" />
-            </div>
-            <div class="field">
-              <label>Confirm</label>
-              <input id="regPass2" type="password" autocomplete="new-password" placeholder="Повтори" />
-            </div>
-            <div class="rowbtn">
-              <button class="btn" type="submit">Створити</button>
-              <button class="btn secondary" type="button" id="closeAuth2">Закрити</button>
-            </div>
-          </form>
-
-          <div class="help" style="margin-top:12px">
-            Вхід потрібен для панелі та чату.
-          </div>
+  <footer>
+    <div class="container">
+      <div style="display:flex; gap:12px; align-items:center; justify-content:space-between; flex-wrap:wrap">
+        <div>© <span id="year"></span> Kyiv M1 Reborn</div>
+        <div style="display:flex; gap:10px; flex-wrap:wrap">
+          <a href="https://discord.gg/yfpzKqD2" target="_blank" rel="noopener">Discord</a>
+          <span style="opacity:.35">•</span>
+          <a href="https://www.roblox.com/communities/426028883/Kyiv-M1-Reborn#!/about" target="_blank" rel="noopener">Roblox</a>
         </div>
       </div>
     </div>
-  </div>
+  </footer>
 
   <script>
-    // ---------- config ----------
-    const COMMUNITY_URL = "https://www.roblox.com/communities/426028883/Kyiv-M1-Reborn#!/about";
-
-    // ---------- helpers ----------
     const $ = (q, el=document) => el.querySelector(q);
     const $$ = (q, el=document) => [...el.querySelectorAll(q)];
 
@@ -1183,532 +853,153 @@
 
     function copy(text){
       navigator.clipboard?.writeText(text).then(
-        ()=>toast("Скопійовано: " + text),
+        ()=>toast("Скопійовано ✅"),
         ()=>toast("Clipboard недоступний")
       );
     }
 
-    function goCommunity(){
-      window.open(COMMUNITY_URL, "_blank", "noopener,noreferrer");
-    }
+    // burger menu
+    const burger = $("#burger");
+    const nav = $("#nav");
+    burger.addEventListener("click", ()=>{
+      const open = nav.classList.toggle("open");
+      burger.classList.toggle("open", open);
+      burger.setAttribute("aria-expanded", open ? "true" : "false");
+    });
 
-    // ---------- localStorage ----------
-    const LS_USERS = "km1_users_v1";
-    const LS_SESSION = "km1_session_v1";
-
-    const LS_CHAT = "km1_chat_v1";
-    const LS_SIM = "km1_chat_sim_v1";
-
-    function loadUsers(){
-      try{ return JSON.parse(localStorage.getItem(LS_USERS) || "[]"); }
-      catch{ return []; }
-    }
-    function saveUsers(users){
-      localStorage.setItem(LS_USERS, JSON.stringify(users));
-    }
-    function getSession(){
-      try{ return JSON.parse(localStorage.getItem(LS_SESSION) || "null"); }
-      catch{ return null; }
-    }
-    function setSession(sess){
-      localStorage.setItem(LS_SESSION, JSON.stringify(sess));
-    }
-    function clearSession(){
-      localStorage.removeItem(LS_SESSION);
-    }
-    function ensureUserDefaults(user){
-      if (typeof user.coins !== "number") user.coins = 150;
-      if (!user.createdAt) user.createdAt = Date.now();
-      if (!user.level) user.level = 1;
-      return user;
-    }
-
-    // ---------- routing ----------
-    const routes = ["home","news","shop","about","dash"];
-    function showRoute(route){
-      routes.forEach(r=>{
-        const page = $("#page-" + r);
-        const active = r === route;
-        page.classList.toggle("active", active);
-        if (active){
-          page.classList.remove("fadeIn");
-          void page.offsetWidth;
-          page.classList.add("fadeIn");
-        }
+    // smooth scroll + active link
+    function setActive(hash){
+      $$("#nav a").forEach(a=>{
+        a.classList.toggle("active", a.getAttribute("href") === hash);
       });
-      $$(".nav a").forEach(a=>{
-        a.classList.toggle("active", a.dataset.route === route);
-      });
-      history.replaceState(null, "", "#" + route);
-      window.scrollTo({top:0, behavior:"smooth"});
     }
 
-    function requireAuthThen(go){
-      const sess = getSession();
-      if (!sess || !sess.nick){
-        openAuth("register");
-        toast("Спершу створіть акаунт");
-        return;
+    function closeNavOnMobile(){
+      if (window.matchMedia("(max-width: 720px)").matches){
+        nav.classList.remove("open");
+        burger.classList.remove("open");
+        burger.setAttribute("aria-expanded", "false");
       }
-      go();
     }
 
-    // ---------- burger ----------
-    const burgerBtn = $("#burgerBtn");
-    const nav = $(".nav");
-    burgerBtn?.addEventListener("click", ()=>{
-      const isOpen = nav.classList.toggle("open");
-      burgerBtn.setAttribute("aria-expanded", String(isOpen));
-    });
-    $$(".nav a").forEach(a=>{
-      a.addEventListener("click", ()=>{
-        if (nav.classList.contains("open")){
-          nav.classList.remove("open");
-          burgerBtn?.setAttribute("aria-expanded", "false");
-        }
-      });
-    });
-
-    // ---------- auth modal ----------
-    const backdrop = $("#authBackdrop");
-    const errBox = $("#authError");
-
-    function openAuth(mode="login"){
-      backdrop.classList.add("show");
-      backdrop.setAttribute("aria-hidden","false");
-      setAuthTab(mode);
-      setTimeout(()=>$("#" + (mode==="login" ? "loginNick":"regNick")).focus(), 50);
-    }
-    function closeAuth(){
-      backdrop.classList.remove("show");
-      backdrop.setAttribute("aria-hidden","true");
-      hideError();
-    }
-    function showError(msg){
-      errBox.textContent = msg;
-      errBox.classList.add("show");
-    }
-    function hideError(){
-      errBox.textContent = "";
-      errBox.classList.remove("show");
-    }
-    function setAuthTab(which){
-      const isLogin = which === "login";
-      $("#tabLogin").classList.toggle("active", isLogin);
-      $("#tabRegister").classList.toggle("active", !isLogin);
-      $("#loginForm").style.display = isLogin ? "flex" : "none";
-      $("#registerForm").style.display = !isLogin ? "flex" : "none";
-      hideError();
-    }
-
-    $("#tabLogin").addEventListener("click", ()=>setAuthTab("login"));
-    $("#tabRegister").addEventListener("click", ()=>setAuthTab("register"));
-    $("#closeAuth").addEventListener("click", closeAuth);
-    $("#closeAuth2").addEventListener("click", closeAuth);
-    backdrop.addEventListener("click", (e)=>{ if(e.target === backdrop) closeAuth(); });
-    document.addEventListener("keydown", (e)=>{ if(e.key === "Escape") closeAuth(); });
-
-    // register
-    $("#registerForm").addEventListener("submit", (e)=>{
-      e.preventDefault();
-      hideError();
-
-      const nick = $("#regNick").value.trim();
-      const pass = $("#regPass").value;
-      const pass2 = $("#regPass2").value;
-
-      if (nick.length < 3) return showError("Нік має бути мінімум 3 символи.");
-      if (pass.length < 3) return showError("Пароль (демо) — мінімум 3 символи.");
-      if (pass !== pass2) return showError("Паролі не співпадають.");
-
-      const users = loadUsers();
-      if (users.some(u => u.nick.toLowerCase() === nick.toLowerCase()))
-        return showError("Такий нік уже зайнятий.");
-
-      const user = ensureUserDefaults({ nick, pass });
-      users.push(user);
-      saveUsers(users);
-
-      setSession({ nick: user.nick, loginAt: Date.now() });
-      toast("Акаунт створено ✅");
-      closeAuth();
-      syncUI();
-      showRoute("dash");
-    });
-
-    // login
-    $("#loginForm").addEventListener("submit", (e)=>{
-      e.preventDefault();
-      hideError();
-
-      const nick = $("#loginNick").value.trim();
-      const pass = $("#loginPass").value;
-
-      const users = loadUsers();
-      const found = users.find(u => u.nick.toLowerCase() === nick.toLowerCase());
-
-      if (!found) return showError("Користувача не знайдено. Зареєструйся.");
-      if (found.pass !== pass) return showError("Невірний пароль (демо).");
-
-      setSession({ nick: found.nick, loginAt: Date.now() });
-      toast("Вхід успішний ✅");
-      closeAuth();
-      syncUI();
-      showRoute("dash");
-    });
-
-    // ui sync
-    function getCurrentUser(){
-      const sess = getSession();
-      if (!sess?.nick) return null;
-      const users = loadUsers();
-      const u = users.find(x => x.nick.toLowerCase() === sess.nick.toLowerCase());
-      return u ? ensureUserDefaults(u) : null;
-    }
-    function saveCurrentUser(u){
-      const users = loadUsers();
-      const idx = users.findIndex(x => x.nick.toLowerCase() === u.nick.toLowerCase());
-      if (idx >= 0) users[idx] = u;
-      saveUsers(users);
-    }
-    function syncUI(){
-      const u = getCurrentUser();
-      const logged = !!u;
-
-      $("#profileBtn").textContent = logged ? "Панель" : "Профіль";
-      $("#dashSubtitle").textContent = logged
-        ? ("Вітаю, " + u.nick + " • Level " + u.level + " • Since " + new Date(u.createdAt).toLocaleDateString())
-        : "—";
-
-      $("#nickLine").textContent = logged ? u.nick : "—";
-      $("#coinsText").textContent = "Coins: " + (logged ? u.coins : 0);
-      $("#dashTitle").textContent = logged ? ("Панель — " + u.nick) : "Панель";
-      $("#chatHint").textContent = logged ? ("Ви в чаті як " + u.nick) : "—";
-    }
-
-    // click actions
-    $$(".nav a").forEach(a=>{
+    $$("#nav a[data-link]").forEach(a=>{
       a.addEventListener("click",(e)=>{
         e.preventDefault();
-        showRoute(a.dataset.route);
+        const id = a.getAttribute("href");
+        const el = $(id);
+        if (!el) return;
+        el.scrollIntoView({behavior:"smooth", block:"start"});
+        history.replaceState(null,"",id);
+        setActive(id);
+        closeNavOnMobile();
       });
     });
 
-    $("#goHome").addEventListener("click", ()=>showRoute("home"));
-
-    $("#profileBtn").addEventListener("click", ()=>{
-      requireAuthThen(()=>showRoute("dash"));
+    $("#goHome").addEventListener("click", ()=>{
+      $("#home").scrollIntoView({behavior:"smooth"});
+      history.replaceState(null,"","#home");
+      setActive("#home");
+    });
+    $("#goHome").addEventListener("keydown",(e)=>{
+      if(e.key==="Enter" || e.key===" "){
+        e.preventDefault();
+        $("#goHome").click();
+      }
     });
 
-    $("#joinBtn").addEventListener("click", ()=>openAuth("register"));
-    $("#howBtn").addEventListener("click", ()=>toast("1) Реєстрація  2) Панель  3) Ком’юніті Roblox"));
-    $("#aboutCommunityBtn").addEventListener("click", (e)=>{ e.preventDefault(); showRoute("about"); });
-
-    $("#communityChip").addEventListener("click", goCommunity);
-    $("#communityBtn").addEventListener("click", goCommunity);
-    $("#dashCommunityBtn").addEventListener("click", goCommunity);
-
-    // orb micro animation
+    // orb click animation
     $("#orb").addEventListener("click", ()=>{
       $("#orb").animate(
-        [{ transform:"translateY(0) rotate(-2deg) scale(1)" },
-         { transform:"translateY(-6px) rotate(4deg) scale(1.03)" },
-         { transform:"translateY(0) rotate(-2deg) scale(1)" }],
-        { duration: 520, easing: "cubic-bezier(.2,.9,.2,1)" }
-      );
-      toast("Kyiv M1 Reborn ✅");
-    });
-
-    $("#pill1").addEventListener("click", ()=>showRoute("news"));
-    $("#pill2").addEventListener("click", ()=>toast("Івенти: скоро буде календар (демо)"));
-    $("#pill3").addEventListener("click", ()=>requireAuthThen(()=>showRoute("dash")));
-
-    $$(".card").forEach(el=>{
-      el.addEventListener("click", ()=>{
-        const action = el.dataset.action;
-        if (!action) return;
-
-        if (action === "route"){
-          showRoute(el.dataset.route);
-          return;
-        }
-        if (action === "profile"){
-          requireAuthThen(()=>showRoute("dash"));
-          return;
-        }
-        if (action === "toast"){
-          toast(el.dataset.text || "OK");
-          return;
-        }
-        if (action === "community"){
-          goCommunity();
-          return;
-        }
-        if (action === "buy"){
-          requireAuthThen(()=>{
-            const item = el.dataset.item;
-            const cost = Number(el.dataset.cost || 0);
-            const u = getCurrentUser();
-            if (u.coins < cost) return toast("Недостатньо coins");
-            u.coins -= cost;
-            saveCurrentUser(u);
-            syncUI();
-            toast("Куплено: " + item + " (-" + cost + ")");
-          });
-          return;
-        }
-      });
-    });
-
-    $("#logoutBtn").addEventListener("click", ()=>{
-      clearSession();
-      toast("Вихід ✅");
-      syncUI();
-      showRoute("home");
-    });
-
-    $("#coinsChip").addEventListener("click", ()=>{
-      requireAuthThen(()=>{
-        const u = getCurrentUser();
-        u.coins += 50;
-        saveCurrentUser(u);
-        syncUI();
-        toast("+50 coins (демо)");
-      });
-    });
-
-    $("#copyNick").addEventListener("click", ()=>{
-      const u = getCurrentUser();
-      if (!u) return openAuth("login");
-      copy(u.nick);
-    });
-
-    $("#dashShopBtn").addEventListener("click", ()=>showRoute("shop"));
-    $("#dashNewsBtn").addEventListener("click", ()=>showRoute("news"));
-
-    $("#testClicksBtn").addEventListener("click", ()=>{
-      const clickable = [...$$("button, a, .card, .chip, .pill, .orb")];
-      clickable.forEach((el, i)=>{
-        el.animate(
-          [{ outline:"0px solid rgba(255,75,75,0)", transform:"translateY(0)" },
-           { outline:"2px solid rgba(255,75,75,.45)", transform:"translateY(-2px)" },
-           { outline:"0px solid rgba(255,75,75,0)", transform:"translateY(0)" }],
-          { duration: 520, delay: i*10, easing: "cubic-bezier(.2,.9,.2,1)" }
-        );
-      });
-      toast("Анімації ✅");
-    });
-
-    // ---------- chat ----------
-    function loadChat(){
-      try{ return JSON.parse(localStorage.getItem(LS_CHAT) || "[]"); }
-      catch{ return []; }
-    }
-    function saveChat(msgs){
-      localStorage.setItem(LS_CHAT, JSON.stringify(msgs));
-    }
-    function getSimOn(){ return localStorage.getItem(LS_SIM) === "1"; }
-    function setSimOn(v){ localStorage.setItem(LS_SIM, v ? "1" : "0"); }
-
-    function initials(nick){
-      const s = (nick || "?").trim();
-      return s ? s.slice(0,1).toUpperCase() : "?";
-    }
-    function formatTime(ts){
-      const d = new Date(ts);
-      return d.toLocaleTimeString([], {hour:"2-digit", minute:"2-digit"});
-    }
-
-    function renderUsers(){
-      const users = loadUsers().map(ensureUserDefaults);
-      const me = getCurrentUser();
-      const sim = getSimOn();
-
-      const onlineSet = new Set();
-      if (me) onlineSet.add(me.nick.toLowerCase());
-
-      if (sim){
-        const others = users.filter(u => !me || u.nick.toLowerCase() !== me.nick.toLowerCase());
-        const seed = new Date().toDateString().length + (users.length*7);
-        const pick = [];
-        for (let i=0; i<others.length; i++){
-          if (pick.length >= 4) break;
-          if (((i + seed) % 3) === 0) pick.push(others[i]);
-        }
-        pick.forEach(u=>onlineSet.add(u.nick.toLowerCase()));
-      }
-
-      const list = users.length ? users : (me ? [me] : []);
-      const root = $("#userList");
-      if (!root) return;
-      root.innerHTML = "";
-
-      list
-        .sort((a,b)=> Number(onlineSet.has(b.nick.toLowerCase())) - Number(onlineSet.has(a.nick.toLowerCase())))
-        .forEach(u=>{
-          const on = onlineSet.has(u.nick.toLowerCase());
-          const row = document.createElement("div");
-          row.className = "uRow";
-          row.innerHTML = `
-            <div class="uLeft">
-              <div class="avatar" title="${u.nick}">${initials(u.nick)}</div>
-              <div style="min-width:0">
-                <div class="uName">${u.nick}</div>
-                <div style="color:var(--muted);font-size:12px;margin-top:2px">Level ${u.level}</div>
-              </div>
-            </div>
-            <div class="uStatus">
-              <span class="uDot ${on ? "on":""}"></span>
-              <span>${on ? "online" : "offline"}</span>
-            </div>
-          `;
-          root.appendChild(row);
-        });
-    }
-
-    function renderChat(){
-      const msgs = loadChat();
-      const me = getCurrentUser();
-      const root = $("#chatMsgs");
-      if (!root) return;
-
-      root.innerHTML = "";
-      msgs.slice(-120).forEach(m=>{
-        const isMe = me && m.nick && m.nick.toLowerCase() === me.nick.toLowerCase();
-        const el = document.createElement("div");
-        el.className = "msg " + (isMe ? "me" : "");
-        el.innerHTML = `
-          <div class="avatar" style="width:28px;height:28px;border-radius:10px;font-size:12px" title="${m.nick}">
-            ${initials(m.nick)}
-          </div>
-          <div>
-            <div class="bubble">
-              <div style="font-weight:900; font-size:12px; opacity:.95">${m.nick}</div>
-              <div style="margin-top:4px; white-space:pre-wrap; word-break:break-word">${m.text}</div>
-              <div class="meta">${formatTime(m.at)}</div>
-            </div>
-          </div>
-        `;
-        root.appendChild(el);
-      });
-
-      root.scrollTop = root.scrollHeight;
-    }
-
-    function pushChatMessage(nick, text){
-      const clean = (text || "").trim();
-      if (!clean) return;
-
-      const msgs = loadChat();
-      msgs.push({
-        id: (crypto?.randomUUID?.() || String(Date.now() + Math.random())),
-        nick,
-        text: clean.slice(0,240),
-        at: Date.now()
-      });
-      saveChat(msgs);
-      renderChat();
-    }
-
-    function botSimulateReply(){
-      const users = loadUsers().map(ensureUserDefaults);
-      const me = getCurrentUser();
-      const others = users.filter(u => !me || u.nick.toLowerCase() !== me.nick.toLowerCase());
-      if (!others.length) return;
-
-      const pool = [
-        "Привіт! Хто онлайн?",
-        "Коли наступний івент?",
-        "Де читати новини?",
-        "Крутий апдейт!",
-        "Я в ком’юніті вже 🙂"
-      ];
-      const who = others[Math.floor(Math.random()*others.length)];
-      const msg = pool[Math.floor(Math.random()*pool.length)];
-      pushChatMessage(who.nick, msg);
-    }
-
-    function syncChatToggleUI(){
-      const on = getSimOn();
-      const t = $("#simToggle");
-      if (!t) return;
-      t.classList.toggle("on", on);
-    }
-
-    $("#simToggle")?.addEventListener("click", ()=>{
-      setSimOn(!getSimOn());
-      syncChatToggleUI();
-      renderUsers();
-      toast(getSimOn() ? "Sim: ON" : "Sim: OFF");
-    });
-
-    $("#chatForm")?.addEventListener("submit", (e)=>{
-      e.preventDefault();
-      requireAuthThen(()=>{
-        const u = getCurrentUser();
-        const inp = $("#chatInput");
-        const text = inp.value;
-        inp.value = "";
-        pushChatMessage(u.nick, text);
-
-        if (getSimOn()){
-          setTimeout(()=>{
-            if (Math.random() < 0.70) botSimulateReply();
-            renderUsers();
-          }, 420);
-        }
-      });
-    });
-
-    $("#clearChatBtn")?.addEventListener("click", ()=>{
-      requireAuthThen(()=>{
-        if (!confirm("Очистити чат локально?")) return;
-        localStorage.removeItem(LS_CHAT);
-        renderChat();
-        toast("Чат очищено");
-      });
-    });
-
-    // init
-    function init(){
-      const h = (location.hash || "#home").replace("#","");
-      if (routes.includes(h)) showRoute(h);
-
-      if (h === "dash" && !getSession()?.nick){
-        showRoute("home");
-        openAuth("register");
-      }
-
-      syncUI();
-
-      $("#heroTitle").animate(
-        [{ transform:"translateY(8px)", opacity:0.0 },
-         { transform:"translateY(0)", opacity:1.0 }],
+        [
+          { transform:"translateY(0) rotate(-2deg) scale(1)" },
+          { transform:"translateY(-8px) rotate(6deg) scale(1.04)" },
+          { transform:"translateY(0) rotate(-2deg) scale(1)" }
+        ],
         { duration: 560, easing: "cubic-bezier(.2,.9,.2,1)" }
       );
+      toast("🚇 Kyiv M1 Reborn");
+    });
 
-      $("#goHome").addEventListener("keydown",(e)=>{
-        if(e.key==="Enter" || e.key===" ") showRoute("home");
+    // quick pills toasts
+    $$(".pill[data-toast], .card[data-toast]").forEach(el=>{
+      el.addEventListener("click", ()=> toast(el.dataset.toast || "OK"));
+    });
+
+    // scroll to rules
+    $("#scrollRules").addEventListener("click", ()=>{
+      $("#rules").scrollIntoView({behavior:"smooth"});
+      history.replaceState(null,"","#rules");
+      setActive("#rules");
+      toast("Правила відкрито");
+    });
+
+    // copy links bundle
+    $("#copyLinksBtn").addEventListener("click", ()=>{
+      const pack =
+`Roblox: https://www.roblox.com/communities/426028883/Kyiv-M1-Reborn#!/about
+Discord: https://discord.gg/yfpzKqD2`;
+      copy(pack);
+    });
+
+    $("#copyDiscordCard").addEventListener("click", ()=> copy("https://discord.gg/yfpzKqD2"));
+
+    $("#copyRulesBtn").addEventListener("click", ()=>{
+      const rules =
+`Kyiv M1 Reborn — правила:
+1) Без токсичності/образ.
+2) Без спаму/реклами.
+3) Без шахрайства/скаму.
+4) Поважай модерацію.
+5) Без NSFW.
+6) Без обходу банів.`;
+      copy(rules);
+    });
+
+    // gallery animation (small shuffle effect)
+    $("#shuffleBtn").addEventListener("click", ()=>{
+      const shots = $$("#galleryGrid .shot");
+      shots.forEach((el, i)=>{
+        el.animate(
+          [
+            { transform:"translateY(0) scale(1)", filter:"brightness(1)" },
+            { transform:`translateY(${(i%2? -6:6)}px) scale(1.02)`, filter:"brightness(1.06)" },
+            { transform:"translateY(0) scale(1)", filter:"brightness(1)" }
+          ],
+          { duration: 520, delay: i*60, easing:"cubic-bezier(.2,.9,.2,1)" }
+        );
       });
+      toast("Галерея ✅");
+    });
 
-      // chat init
-      syncChatToggleUI();
-      renderUsers();
-      renderChat();
+    // reveal on scroll
+    const obs = new IntersectionObserver((entries)=>{
+      entries.forEach(e=>{
+        if (e.isIntersecting) e.target.classList.add("on");
+      });
+    }, { threshold: 0.12 });
+    $$(".reveal").forEach(el=>obs.observe(el));
 
-      const msgs = loadChat();
-      if (!msgs.length){
-        saveChat([{
-          id: "welcome",
-          nick: "System",
-          text: "Welcome to Kyiv M1 Reborn chat (демо). Увійди, щоб писати повідомлення.",
-          at: Date.now()
-        }]);
-        renderChat();
-      }
+    // initial state + active hash
+    function init(){
+      $("#year").textContent = new Date().getFullYear();
+      const h = location.hash || "#home";
+      setActive(h);
+
+      // if opened with hash, scroll nicely
+      const target = $(h);
+      if (target) setTimeout(()=>target.scrollIntoView({behavior:"smooth"}), 120);
+      // first reveal immediately
+      setTimeout(()=>$("#home")?.classList.add("on"), 80);
     }
-
     init();
   </script>
+
+  <!--
+    GITHUB PAGES IMPORTANT:
+    1) Створи папку /assets у репозиторії
+    2) Поклади туди 4 фото і назви:
+       shot1.png, shot2.png, shot3.png, shot4.png
+    3) Якщо інші назви — просто зміни src="./assets/..."
+  -->
 </body>
 </html>
